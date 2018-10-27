@@ -50,15 +50,27 @@ function Gridlist:removeColumn(i)
 	table.remove(self.columns, i)
 end
 
-function Gridlist:addItem(val, containsImg, imgColIndex, func)
-	if #self.columns == 0 then return end
+function Gridlist:addItem(...)
+	local arg1, arg2 = unpack(arg)
+	local val = arg1
+	local imgColIndex = type(arg2) == 'number' and arg2
+	local callback = type(arg[#arg]) == 'function' and arg[#arg]
+
+	local values = type(val) ~= "table" and {val} or val
+	if (imgColIndex) then
+		if not fileExists(values[imgColIndex]) then
+			error("file " .. values[imgColIndex] .. " doesn't exist", 2)
+		end
+	end
+
+	if #self.columns == 0 then
+		return
+	end
 
 	local item = {}
-	item.values = type(val) ~= "table" and {val} or val
-	item.onClick = func or function()end -- maybe use 'on' event?
-	item.onSelect = function()end -- same here, gridlist should have 'on' events
-	item.containsImg = containsImg or false
-	item.imgColIndex = not containsImg and 0 or imgColIndex or 1
+	item.values = values
+	item.onClick = callback
+	item.imgColIndex = imgColIndex
 
 	table.insert(self.items, item)
 
@@ -162,7 +174,7 @@ function Gridlist:drawItems()
 
 			if (val) then
 				-- item image
-				if (item.containsImg and fileExists(val) and item.imgColIndex == j) then
+				if (item.imgColIndex and item.imgColIndex == j) then
 					resizeColumn(col, self.itemh)
 
 					dxDrawImage(xOff, yOff, self.itemh, self.itemh, val, 0, 0, 0)
@@ -208,7 +220,9 @@ function Gridlist:onKey(key, down)
 
 			if (self.mouseDown and isMouseOverPos(item.pos.x, item.pos.y, item.pos.w, item.pos.h)) then
 				self.selectedItem = i
-				item.onClick()
+				if item.onClick then
+					item.onClick()
+				end
 			end
 		end
 	end
