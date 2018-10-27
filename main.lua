@@ -47,7 +47,7 @@ function Component:update()
 		if child.type ~= 'dragarea' then
 			child:update()
 		else
-			-- draw borders after the the rest of the children so they overlap them and draw them before the dragarea is updated so the border positions are updated within the same frame.
+			-- draw borders after the the rest of the children so they can overlap them and draw them before the dragarea is updated so the border positions are updated within the same frame.
 			if (self.drawBorders) then
 				self:drawBorders()
 			end
