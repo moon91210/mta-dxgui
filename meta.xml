@@ -1,0 +1,35 @@
+<meta>
+    <info name="DX GUI Framework" author="Tails" type="script" version="0.1"/>
+    <min_mta_version client="1.5.4-9.11413" server="1.5.4-9.11413"/>
+    <oop>true</oop>
+    <!-- utils -->
+    <script src="utils.lua" type="client" cache="false"/>
+
+    <!-- main -->
+    <script src="methods.lua" type="client" cache="false"/>
+    <script src="main.lua" type="client" cache="false"/>
+    <script src="events.lua" type="client" cache="false"/>
+
+    <!-- components -->
+    <script src="components/dragarea.lua" type="client" cache="false"/>
+    <script src="components/button.lua" type="client" cache="false"/>
+    <script src="components/window.lua" type="client" cache="false"/>
+    <script src="components/image.lua" type="client" cache="false"/>
+    <script src="components/input.lua" type="client" cache="false"/>
+    <script src="components/checkbox.lua" type="client" cache="false"/>
+    <script src="components/gridlist.lua" type="client" cache="false"/>
+    <script src="components/label.lua" type="client" cache="false"/>
+    <script src="components/pane.lua" type="client" cache="false"/>
+    <script src="components/video.lua" type="client" cache="false"/>
+    <script src="components/tabpanel.lua" type="client" cache="false"/>
+
+    
+    <script src="demo.lua" type="client"/>
+    <script src="demo_s.lua" type="server"/>
+
+    <!-- files -->
+    <file src="img/corner.png"/>
+    <file src="img/button.png"/>
+    <file src="img/broken.png"/>
+    <file src="components/test.webm"/>
+</meta>
