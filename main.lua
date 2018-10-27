@@ -60,8 +60,19 @@ function Component:update()
 			self.mouseOver = mouseX and isMouseOverPos(self.x, self.y, self.w, self.h)
 		end
 	end
+end
 
-	
+function Component:focus()
+	if self.parent then
+		self.parent.focused = true
+	else
+		self.focused = true
+	end
+	for i=1, #components do
+		if self ~= components[i] then
+			components[i].focused = false
+		end
+	end
 end
 
 function Component:destroy()
@@ -126,19 +137,6 @@ function Component:setToBack()
 		comps:insert(self)
 	end
 	return self
-end
-
-function Component:focus()
-	if self.parent then
-		self.parent.focused = true
-	else
-		self.focused = true
-	end
-	for i=1, #components do
-		if self ~= components[i] then
-			components[i].focused = false
-		end
-	end
 end
 
 function Component:on(event, callback) -- need to add remove method
