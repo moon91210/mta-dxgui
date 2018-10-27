@@ -18,3 +18,9 @@ btn2.on('click', function() btn2.value = 'clicked' end)
 ```
 
 For more examples check the *demo.lua* file.
+
+# License
+
+Copyright 2018 Tails
+
+Licensed under the AGPLv3: https://www.gnu.org/licenses/agpl-3.0.html
