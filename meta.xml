@@ -24,8 +24,8 @@
     <script src="components/tabpanel.lua" type="client" cache="false"/>
 
     
-    <script src="demo.lua" type="client"/>
-    <script src="demo_s.lua" type="server"/>
+    <script src="demo/demo.lua" type="client"/>
+    <script src="demo/demo_s.lua" type="server"/>
 
     <!-- files -->
     <file src="img/corner.png"/>
