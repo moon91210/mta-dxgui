@@ -23,22 +23,7 @@ function Component.new(typ, x, y, w, h)
 
 	components:insert(1, self)
 
-	self:focus()
-
 	return self
-end
-
-function Component:focus()
-	if self.parent then
-		self.parent.focused = true
-	else
-		self.focused = true
-	end
-	for i=1, #components do
-		if self ~= components[i] then
-			components[i].focused = false
-		end
-	end
 end
 
 function Component:update()
@@ -143,6 +128,19 @@ function Component:setToBack()
 	return self
 end
 
+function Component:focus()
+	if self.parent then
+		self.parent.focused = true
+	else
+		self.focused = true
+	end
+	for i=1, #components do
+		if self ~= components[i] then
+			components[i].focused = false
+		end
+	end
+end
+
 function Component:on(event, callback) -- need to add remove method
 	self.events:insert({
 		event = event,
@@ -151,7 +149,6 @@ function Component:on(event, callback) -- need to add remove method
 	return self
 end
 
--- Basic
 function Component:getPosition()
 	return self.x, self.y
 end
@@ -191,7 +188,6 @@ function Component:setText(v)
 	return self
 end
 
--- Special
 function Component:align(state)
 	local sw, sh = guiGetScreenSize()
 	if (self.parent) then
