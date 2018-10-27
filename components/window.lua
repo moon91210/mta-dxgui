@@ -22,31 +22,23 @@ function Window.new(x, y, w, h, value)
 end
 
 function Window:draw()
-	-- local cz = 10
 	local color = self.focused and tocolor(20,20,20,235) or tocolor(8,8,8,235)
-	-- dxDrawImage(self.x, self.y + self.title_h, cz, cz, "img/corner.png", 0,0,0, color)
-	-- dxDrawImage(self.x + self.w - cz, self.y + self.title_h, cz, cz, "img/corner.png", 90,0,0, color)
 
 	-- titlebar
 	dxDrawRectangle(self.x, self.y, self.w, self.title_h, tocolor(0,0,0,245))
-	-- main bg
-	dxDrawRectangle(self.x, self.y + self.title_h, self.w, self.h - self.title_h, color)
-	
-	-- dxDrawRectangle(self.x + cz, self.y + self.h, self.w - cz*2, cz, color)
-	
-	-- dxDrawImage(self.x, self.y + self.h, cz, cz, "img/corner.png", -90,0,0, color)
-	-- dxDrawImage(self.x + self.w - cz, self.y + self.h, cz, cz, "img/corner.png", 180,0,0, color)
-
 	dxDrawText(self.value, self.x+2, self.y+2, self.x + self.w+2, self.y + self.title_h+2, tocolor(0,0,0,255), 1.5, "tahoma", "center", "center")
 	dxDrawText(self.value, self.x, self.y, self.x + self.w, self.y + self.title_h, tocolor(225,225,225,255), 1.5, "tahoma", "center", "center")
+	-- main bg
+	dxDrawRectangle(self.x, self.y + self.title_h, self.w, self.h - self.title_h, color)
 end
 
 function Window:drawBorders()
-	local size = 2
-	dxDrawLine(self.x, self.y, self.x + self.w, self.y, _, size)
-	dxDrawLine(self.x, self.y + self.h, self.x + self.w, self.y + self.h, _, size)
-	dxDrawLine(self.x, self.y, self.x, self.y + self.h, _, size)
-	dxDrawLine(self.x + self.w, self.y, self.x + self.w, self.y + self.h, _, size)
+	local size = 4
+	local color = tocolor(32,32,32,200)
+	dxDrawLine(self.x-size, self.y-size/2, self.x+size + self.w, self.y-size/2, color, size)--top
+	dxDrawLine(self.x-size, self.y+size/2 + self.h, self.x+size + self.w, self.y+size/2 + self.h, color, size)--bottom
+	dxDrawLine(self.x-size/2, self.y, self.x-size/2, self.y + self.h, color, size)--left
+	dxDrawLine(self.x+size/2 + self.w, self.y, self.x+size/2 + self.w, self.y + self.h, color, size)--right
 end
 
 setmetatable(Window, {__call = function(_, ...) return Window.new(...) end})
