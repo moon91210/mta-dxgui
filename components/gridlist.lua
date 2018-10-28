@@ -15,6 +15,7 @@ function Gridlist.new(x, y, w, h)
 	self.selectedItem = 0
 	self.rt = DxRenderTarget(self.w, self.h, true)
 	self.rt_updated = false
+	self.scrollbarWidth = 15
 	return self
 end
 
@@ -81,12 +82,12 @@ end
 
 function Gridlist:removeItem(i)
 	table.remove(self.items, i)
-
+	
 	if #self.items == 0 then
-		self.sp = 1
 		self.selectedItem = 0
+	else
+		self.sp = math.max(1, self.sp - 1)
 	end
-	--- wtf not all items are removed when looping this function
 
 	updateRT(self)
 end
@@ -129,6 +130,25 @@ function Gridlist:draw()
 	end
 	
 	dxDrawImage(self.x, self.y, self.w, self.h, self.rt)
+
+	self:drawScrollBar()
+end
+
+function Gridlist:drawScrollBar()
+	if #self.items > self.maxItems then
+		local shaftw = self.scrollbarWidth
+		local shafth = self.h
+
+		local thumbw = self.scrollbarWidth
+		local thumbh = (shafth/(#self.items-self.maxItems+1))
+
+		local thumbPos = thumbh * (self.sp - 1)
+
+		-- shaft
+		dxDrawRectangle(self.x + self.w - shaftw, self.y, shaftw, shafth, tocolor(66,66,66,200))
+		-- thumb
+		dxDrawRectangle(self.x + self.w - thumbw, self.y + thumbPos, thumbw, thumbh, tocolor(55,55,255,255))
+	end
 end
 
 function Gridlist:drawItems()
@@ -154,7 +174,7 @@ function Gridlist:drawItems()
 			item.pos = {
 				x = self.x,
 				y = self.y + yOff,
-				w = self.w,
+				w = self.w - self.scrollbarWidth,
 				h = self.itemh
 			}
 
