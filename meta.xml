@@ -22,8 +22,9 @@
     <script src="components/pane.lua" type="client" cache="false"/>
     <script src="components/video.lua" type="client" cache="false"/>
     <script src="components/tabpanel.lua" type="client" cache="false"/>
+    <script src="components/browser.lua" type="client" cache="false"/>
 
-    
+    <!-- tests -->
     <script src="demo/demo.lua" type="client"/>
     <script src="demo/demo_s.lua" type="server"/>
 
