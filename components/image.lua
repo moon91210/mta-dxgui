@@ -13,7 +13,7 @@ function Image(x, y, w, h, path, alpha)
 	self.alpha = alpha or 255 -- this needs to be a component variable (set/getAlpha)
 
 	function self:load(path, isPixels)
-		if (src == path) then
+		if (src == path or not path) then
 			return false
 		end
 		
@@ -45,7 +45,9 @@ function Image(x, y, w, h, path, alpha)
 		return true
 	end
 
-	function self:loadRemote(url)
+	function self:loadRemote(url, callback)
+		check('s', {url})
+		self:unload()
 		requestBrowserDomains({url}, true, function()
 			if (isBrowserDomainBlocked(url, true)) then
 				self:loadRemote(url)
@@ -56,6 +58,9 @@ function Image(x, y, w, h, path, alpha)
 					assert(err == 0, "Error fetching image. Code: "..err)
 				end
 				self:loadPixels(pix)
+				if type(callback) == 'function' then
+					callback(pix)
+				end
 			end)
 		end)
 	end
@@ -71,12 +76,14 @@ function Image(x, y, w, h, path, alpha)
 	end
 
 	function self:loadPixels(pixels)
+		check('s', {pixels})
 		tex = DxTexture(pixels)
 		pix = pixels
 		self:getNativeSize(true)
 	end
 
 	function self:getNativeSize(update)
+		check('b', {update})
 		if (not pix) then return false end
 
 		if (update) then
@@ -89,6 +96,12 @@ function Image(x, y, w, h, path, alpha)
 		fitSize.h = math.ceil(nativeSize.h*ratio)
 
 		return nativeSize, fitSize, ratio
+	end
+
+	function self:setFitMode(mode)
+		check('s', {mode})
+		fitMode = mode
+		return self
 	end
 
 	function self:draw()
@@ -111,7 +124,6 @@ function Image(x, y, w, h, path, alpha)
 		end
 	end
 
-	function self:setFitMode(mode) fitMode = mode return self end
 	function self:getFitMode() return fitMode end
 	function self:getFitSize() return fitSize end
 	function self:getPixels() return pix end
