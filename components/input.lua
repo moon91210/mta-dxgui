@@ -9,13 +9,11 @@ function Input.new(x, y, w, h, value)
 	self.readonly = false
 	self.maxLength = nil
 	self.active = false
-	self.font = "default-bold"
+	self.font = "tahoma"
 	self.fontSize = 1.35
 	self.bsHeld = false
 	self.bsTick = nil
-	self.charEvent = function(char)
-		self:onChar(char)
-	end
+	self.charEvent = function(char) self:onChar(char) end
 	return self
 end
 
@@ -39,15 +37,13 @@ function Input:draw()
 	end
 end
 
-function Input:onChar(char)
-	if (self.visible and self.active) then
-		self.value = self.value..char
-	else
-		self:setActive(false)
-	end
+function Input:setMasked(state)
+	check('b', {state})
+	self.masked = state
 end
 
 function Input:setActive(state)
+	check('b', {state})
 	if (state) then
 		if (not self.active) then
 			guiSetInputMode("no_binds")
@@ -60,6 +56,14 @@ function Input:setActive(state)
 		self.active = false
 	end
 	return self
+end
+
+function Input:onChar(char)
+	if (self.visible and self.active) then
+		self.value = self.value..char
+	else
+		self:setActive(false)
+	end
 end
 
 function Input:onKey(key, down)
