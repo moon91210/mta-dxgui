@@ -43,29 +43,37 @@ end
 -- Handlers
 function dxCallEvent(self, event, ...)
 	local events = self.events
-	for i=1, #events do
-		if events[i].event == event then
-			events[i].callback(unpack(arg))
+	for i=#events, 1, -1 do
+		local evt = events[i]
+		if evt.event == event then
+			evt.callback(unpack(arg))
+			if evt.once then
+				table.remove(events, i)
+			end
 		end
 	end
 	return false
 end
 
-function check(pattern, ...)
+function check(pattern, arg, level)
 	if type(pattern) ~= 'string' then check('s', pattern) end
 	local types = {s = "string", n = "number", b = "boolean", f = "function", t = "table", u = "userdata"}
 	for i=1, #pattern do
 		local c = pattern:sub(i,i)
 		local t = #arg > 0 and type(arg[i])
 		if not t then error('got pattern but missing args') end
-		if t ~= types[c] then error(("bad argument #%s to '%s' (%s expected, got %s)"):format(i, debug.getinfo(2, "n").name, types[c], tostring(t)), 3) end
+		if t ~= types[c] then error(("bad argument #%s to '%s' (%s expected, got %s)"):format(i, debug.getinfo(2, "n").name, types[c], tostring(t)), level or 3) end
 	end
 end
 
-function componentExists(comp)
-	if type(comp) == 'table' and not comp.type then
-		error("the parent doesn't exist or was destroyed", 3)
+function isComponent(comp, typ)
+	if type(comp) == 'table' and comp.type then
+		if typ then
+			return typ == comp.type
+		end
+		return true
 	end
+	return false
 end
 
 function dxKeyHandler(self, key, down)
@@ -147,4 +155,8 @@ end
 
 function constrain(num, low, high)
 	return (num >= low and num <= high and num) or (num < low and low) or (num > high and high)
+end
+
+function map(n, start1, stop1, start2, stop2)
+	return ((n-start1)/(stop1-start1))*(stop2-start2)+start2
 end
