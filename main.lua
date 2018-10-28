@@ -3,6 +3,7 @@ components = Table.new()
 Component = {}
 
 function Component.new(typ, x, y, w, h)
+	check('nnnn', {x, y, w, h}, 5)
 	local self = inherit({}, Component)
 	self.ox = x
 	self.oy = y
@@ -13,6 +14,7 @@ function Component.new(typ, x, y, w, h)
 	self.offx = 0
 	self.offy = 0
 	self.type = typ
+	self.value = ''
 	self.children = Table.new()
 	self.events = Table.new()
 	self.parent = nil
@@ -40,19 +42,13 @@ function Component:update()
 	if (self.draw) then
 		self:draw()
 	end
+
+	if (self.drawBorders) then
+		self:drawBorders()
+	end
 	
 	for i=#self.children, 1, -1 do
-		local child = self.children[i]
-
-		if child.type ~= 'dragarea' then
-			child:update()
-		else
-			-- draw borders after the the rest of the children so they can overlap them and draw them before the dragarea is updated so the border positions are updated within the same frame.
-			if (self.drawBorders) then
-				self:drawBorders()
-			end
-			child:update()
-		end
+		self.children[i]:update()
 	end
 	
 	if (self.parent) then
@@ -61,6 +57,15 @@ function Component:update()
 		end
 	end
 end
+
+-- function Component:drawBorders()
+-- 	local size = 24
+-- 	local color = tocolor(33,255,33,155)
+-- 	dxDrawLine(self.x-size, self.y-size/2, self.x+size + self.w, self.y-size/2, color, size)--top
+-- 	dxDrawLine(self.x-size, self.y+size/2 + self.h, self.x+size + self.w, self.y+size/2 + self.h, color, size)--bottom
+-- 	dxDrawLine(self.x-size/2, self.y, self.x-size/2, self.y + self.h, color, size)--left
+-- 	dxDrawLine(self.x+size/2 + self.w, self.y, self.x+size/2 + self.w, self.y + self.h, color, size)--right
+-- end
 
 function Component:focus()
 	if self.parent then
@@ -90,16 +95,17 @@ function Component:destroy()
 
 	dxCallEvent(self, "destroy")
 
-	for k, v in pairs(self) do
+	for k in pairs(self) do
 		self[k] = nil
 	end
-	self = nil
+
 	collectgarbage()
 end
 
 function Component:setParent(parent)
-	-- need to implement proper error checking
-	componentExists(parent)
+	if not isComponent(parent) then
+		error("the parent doesn't exist or was destroyed", 2)
+	end
 
 	if self.parent then
 		self:removeParent()
@@ -108,6 +114,18 @@ function Component:setParent(parent)
 	self.parent = parent
 	components:removeByValue(self)
 	return self
+end
+
+function Component:addChildren(children)
+	if isComponent(children) then
+		child:setParent(self)
+	elseif type(children) == 'table' then
+		for i=1, #children do
+			if isComponent(children[i]) then
+				children[i]:setParent(self)
+			end
+		end
+	end
 end
 
 function Component:removeParent()
@@ -139,11 +157,30 @@ function Component:setToBack()
 	return self
 end
 
-function Component:on(event, callback) -- need to add remove method
+function Component:on(event, callback)
 	self.events:insert({
 		event = event,
 		callback = callback
 	})
+	return self
+end
+
+function Component:once(event, callback)
+	self.events:insert({
+		event = event,
+		callback = callback,
+		once = true
+	})
+	return self
+end
+
+function Component:removeOn(event, callback)
+	for i=1, #self.events do
+		local evt = self.events[i]
+		if evt.event == event and evt.callback == callback then
+			table.remove(self.events, i)
+		end
+	end
 	return self
 end
 
