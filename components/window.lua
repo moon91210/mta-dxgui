@@ -33,8 +33,8 @@ function Window:draw()
 end
 
 function Window:drawBorders()
-	local size = 4
-	local color = tocolor(32,32,32,200)
+	local size = 6
+	local color = tocolor(132,132,132,55)
 	dxDrawLine(self.x-size, self.y-size/2, self.x+size + self.w, self.y-size/2, color, size)--top
 	dxDrawLine(self.x-size, self.y+size/2 + self.h, self.x+size + self.w, self.y+size/2 + self.h, color, size)--bottom
 	dxDrawLine(self.x-size/2, self.y, self.x-size/2, self.y + self.h, color, size)--left
