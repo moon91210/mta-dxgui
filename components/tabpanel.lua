@@ -41,8 +41,6 @@ function TabPanel:draw()
 end
 
 function TabPanel:addTab(name)
-	assert(type(name) == 'string', 'arg1 name not a string')
-
 	local tab = _Tab.new(0, 0, self.w, self.h, name, self)
 	table.insert(self.tabs, tab)
 
@@ -73,6 +71,10 @@ _Tab = {}
 _Tab.__index = _Tab
 
 function _Tab.new(x, y, w, h, value, parent)
+	if not parent and not isComponent(parent, 'tabpanel') then
+		return
+	end
+
 	local self = setmetatable(Component.new('tabpanel:tab', x, parent.topH + y, w, h - parent.topH), _Tab)
 	self.value = value
 
@@ -96,7 +98,3 @@ function _Tab.new(x, y, w, h, value, parent)
 
 	return self
 end
-
-
--- dxDrawRectangle(self.x + offx, self.y, w, self.topH, tocolor(0,0,0))
--- dxDrawText(tab.value, self.x + offx, self.y, self.x + w, self.y + self.topH, tocolor(255,255,255), 2, 'default', 'center', 'center')
