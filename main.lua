@@ -93,7 +93,7 @@ function Component:destroy()
 		components:removeByValue(self)
 	end
 
-	dxCallEvent(self, "destroy")
+	dxCallEvent(self, "destroy", self)
 
 	for k in pairs(self) do
 		self[k] = nil
@@ -118,7 +118,7 @@ end
 
 function Component:addChildren(children)
 	if isComponent(children) then
-		child:setParent(self)
+		children:setParent(self)
 	elseif type(children) == 'table' then
 		for i=1, #children do
 			if isComponent(children[i]) then
