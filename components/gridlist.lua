@@ -78,13 +78,22 @@ end
 function Gridlist:setColumnCheckThumbnails(colIndex, state)
 	check('b', {state})
 
-	local col = self.columns[colIndex]
-	col.checkThumbnails = state
+	self.columns[colIndex].checkThumbnails = state
 	if state then
 		for i=1, #self.items do
-			self:validateItemPath(i, colIndex)
+			local val = self.items[i].values[colIndex].value
+			self.items[i].values[colIndex] = parseItemValues(self, val, true)
 		end
 	end
+end
+
+function Gridlist:getSelectedItemIndex()
+	return self.selectedItem
+end
+
+function Gridlist:getItemValue(itemIndex, colIndex)
+	check('nn', {itemIndex, colIndex})
+	return self.items[itemIndex].values[colIndex]
 end
 
 function Gridlist:setColumnWidth(colIndex, width)
