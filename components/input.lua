@@ -87,6 +87,9 @@ function Input:onKey(key, down)
 		if (getKeyState("lctrl")) then
 			self.value = self.value..clipboard
 		end
+	elseif (self.active and key == 'enter' and down) then
+		dxCallEvent(self, 'accepted')
+		self:setActive(false)
 	end
 end
 
