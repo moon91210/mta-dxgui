@@ -55,17 +55,6 @@ function dxCallEvent(self, event, ...)
 	return false
 end
 
-function check(pattern, arg, level)
-	if type(pattern) ~= 'string' then check('s', pattern) end
-	local types = {s = "string", n = "number", b = "boolean", f = "function", t = "table", u = "userdata"}
-	for i=1, #pattern do
-		local c = pattern:sub(i,i)
-		local t = #arg > 0 and type(arg[i])
-		if not t then error('got pattern but missing args') end
-		if t ~= types[c] then error(("bad argument #%s to '%s' (%s expected, got %s)"):format(i, debug.getinfo(2, "n").name, types[c], tostring(t)), level or 3) end
-	end
-end
-
 function isComponent(comp, typ)
 	if type(comp) == 'table' and comp.type then
 		if typ then
@@ -115,7 +104,7 @@ function dxClickHandler(self, btn, state, mx, my)
 		self:onClick(btn, state)
 	end
 
-	if (btn == "left") then
+	if (btn == "left" or btn == "middle") then
 		if (state == "down")  then
 			if (mouseOver) then
 				self.mouseDown = true
@@ -159,4 +148,23 @@ end
 
 function map(n, start1, stop1, start2, stop2)
 	return ((n-start1)/(stop1-start1))*(stop2-start2)+start2
+end
+
+function assert(statement, message, level)
+	if not statement then
+		error('['..debug.getinfo(2, "n").name..'] '..message or '', level or 2)
+	end
+end
+
+function check(pattern, arg, level)
+	if type(pattern) ~= 'string' then check('s', pattern) end
+	local types = {s = "string", n = "number", b = "boolean", f = "function", t = "table", u = "userdata"}
+	for i=1, #pattern do
+		local c = pattern:sub(i,i)
+		local t = #arg > 0 and type(arg[i]) or nil
+		if t ~= types[c] then
+			local msg = "bad argument #%s in '%s' (%s expected, got %s)"
+			error(msg:format(i, debug.getinfo(2, "n").name, types[c], tostring(t)), level or 3)
+		end
+	end
 end
