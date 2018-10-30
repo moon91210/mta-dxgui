@@ -91,6 +91,11 @@ function Gridlist:getSelectedItemIndex()
 	return self.selectedItem
 end
 
+function Gridlist:setSelectedItem(index)
+	self.selectedItem = index
+	updateRT(self)
+end
+
 function Gridlist:getItemValue(itemIndex, colIndex)
 	check('nn', {itemIndex, colIndex})
 	return self.items[itemIndex].values[colIndex]
@@ -224,6 +229,7 @@ end
 
 function Gridlist:drawItems()
 	if (not self.maxItems) then return end
+	
 	local itemCount = #self.items
 	self.ep = itemCount < self.maxItems and itemCount or self.sp + self.maxItems - 1
 
@@ -249,7 +255,7 @@ function Gridlist:drawItems()
 		local xOff = 0
 
 		local item = self.items[i]
-		item.pos = {
+		local clickArea = {
 			x = self.x,
 			y = self.y + yOff,
 			w = self.w - self.scrollbarWidth,
@@ -257,12 +263,14 @@ function Gridlist:drawItems()
 		}
 
 		-- styles (temporary, eventually will be replaced with global styles)
-		local mo = self.focused and isMouseOverPos(item.pos.x, item.pos.y, item.pos.w, item.pos.h)
+		local mo = self.focused and isMouseOverPos(clickArea.x, clickArea.y, clickArea.w, clickArea.h)
 		local textColor = (self.selectedItem == i and tocolor(255,255,255)) or (mo and tocolor(55,55,255,255)) or item.color or tocolor(255,255,255)
 		local bgColor = (self.selectedItem == i and tocolor(55,55,255,255)) or (mo and tocolor(15,15,15,255)) or item.bgColor or tocolor(23,23,23,255)
 
 		-- item background
-		dxDrawImage(xOff, yOff, item.pos.w, self.itemh, "./img/button.png", 0, 0, 0, bgColor)
+		dxDrawImage(xOff, yOff, clickArea.w, self.itemh, "./img/button.png", 0, 0, 0, bgColor)
+
+		item.clickArea = clickArea
 
 		for j=1, columnCount do
 			local col = self.columns[j]
@@ -270,7 +278,7 @@ function Gridlist:drawItems()
 
 			if val then
 				if col.checkThumbnails then
-					dxDrawImage(xOff, yOff, self.itemh, self.itemh, val, 0, 0, 0)
+					dxDrawImage(xOff + paddingX, yOff, self.itemh, self.itemh, val, 0, 0, 0)
 				else
 					dxDrawText(val, xOff + paddingX, yOff, xOff + paddingX + col.width, yOff + self.itemh, textColor, self.textSize, 'arial', "left", "center", true, false, false, false, false)
 				end
@@ -301,9 +309,8 @@ function Gridlist:onKey(key, down)
 	elseif (key == 'mouse1' and not down) then
 		for i=self.sp, self.ep do
 			local item = self.items[i]
-
-			if (self.mouseDown and isMouseOverPos(item.pos.x, item.pos.y, item.pos.w, item.pos.h)) then
-				self.selectedItem = i
+			if (self.mouseDown and isMouseOverPos(item.clickArea.x, item.clickArea.y, item.clickArea.w, item.clickArea.h)) then
+				self:setSelectedItem(i)
 				if item.onClick and type(item.onClick) == 'function' then
 					item.onClick()
 				end
