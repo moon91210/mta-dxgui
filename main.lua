@@ -36,7 +36,7 @@ function Component:update()
 	if (parent) then
 		self.x = parent.x + self.ox + parent.offx
 		self.y = parent.y + self.oy + parent.offy
-		self.focused = parent.focused -- children need a separate focus variable to fix z-order issue
+		self.focused = parent.focused -- children need a separate focus to fix child z-order issue
 	end
 	
 	if (self.draw) then
@@ -50,12 +50,8 @@ function Component:update()
 	for i=#self.children, 1, -1 do
 		self.children[i]:update()
 	end
-	
-	if (self.parent) then
-		if (self.focused) then
-			self.mouseOver = mouseX and isMouseOverPos(self.x, self.y, self.w, self.h)
-		end
-	end
+
+	self.mouseOver = (self.focused or not parent) and isMouseOverPos(self.x, self.y, self.w, self.h)
 end
 
 -- function Component:drawBorders()
