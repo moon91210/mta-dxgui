@@ -152,7 +152,8 @@ end
 
 function assert(statement, message, level)
 	if not statement then
-		error('['..debug.getinfo(2, "n").name..'] '..message or '', level or 2)
+		local funcName = debug.getinfo(2, 'n').name or 'unknown'
+		error('['..funcName..'] '..message or '', level or 3)
 	end
 end
 
