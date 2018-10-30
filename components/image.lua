@@ -53,13 +53,11 @@ function Image(x, y, w, h, path, alpha)
 				self:loadRemote(url)
 				return
 			end
-			fetchRemote(url, function(pix, err)
-				if (err > 0) then
-					assert(err == 0, "Error fetching image. Code: "..err)
-				end
-				self:loadPixels(pix)
+			fetchRemote(url, function(data, err)
+				assert(err == 0, "Error fetching image. Err: "..err..". URL: "..url, 2)
+				self:loadPixels(data)
 				if type(callback) == 'function' then
-					callback(pix)
+					callback(data)
 				end
 			end)
 		end)
