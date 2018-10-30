@@ -54,15 +54,6 @@ function Component:update()
 	self.mouseOver = (self.focused or not parent) and isMouseOverPos(self.x, self.y, self.w, self.h)
 end
 
--- function Component:drawBorders()
--- 	local size = 24
--- 	local color = tocolor(33,255,33,155)
--- 	dxDrawLine(self.x-size, self.y-size/2, self.x+size + self.w, self.y-size/2, color, size)--top
--- 	dxDrawLine(self.x-size, self.y+size/2 + self.h, self.x+size + self.w, self.y+size/2 + self.h, color, size)--bottom
--- 	dxDrawLine(self.x-size/2, self.y, self.x-size/2, self.y + self.h, color, size)--left
--- 	dxDrawLine(self.x+size/2 + self.w, self.y, self.x+size/2 + self.w, self.y + self.h, color, size)--right
--- end
-
 function Component:focus()
 	if self.parent then
 		self.parent.focused = true
