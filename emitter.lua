@@ -55,7 +55,3 @@ function Emitter:removeOn(evname, callback)
 		end
 	end
 end
-
-function Emitter:removeOnce(evname)
-	self._once[evname] = nil
-end
