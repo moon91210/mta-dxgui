@@ -23,6 +23,7 @@
     <script src="components/video.lua" type="client" cache="false"/>
     <script src="components/tabpanel.lua" type="client" cache="false"/>
     <script src="components/browser.lua" type="client" cache="false"/>
+    <script src="components/progressbar.lua" type="client" cache="false"/>
 
     <!-- extra -->
     <script src="components/alert.lua" type="client" cache="false"/>
