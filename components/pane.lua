@@ -1,9 +1,8 @@
 Pane = {}
-Pane.__index = Pane
 
 
 function Pane.new(x, y, w, h)
-	local self = setmetatable(Component.new('pane', x, y, w, h), Pane)
+	local self = inherit(Component.new('pane', x, y, w, h), Pane)
 	self.dragArea = DragArea(0, 0, self.w, self.h).setParent(self)
 	self.debug = false
 	return self

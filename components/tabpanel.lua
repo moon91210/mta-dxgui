@@ -1,9 +1,8 @@
 TabPanel = {}
-TabPanel.__index = TabPanel
 
 
 function TabPanel.new(x, y, w, h)
-	local self = setmetatable(Component.new('tabpanel', x, y, w, h), TabPanel)
+	local self = inherit(Component.new('tabpanel', x, y, w, h), TabPanel)
 	self.tabs = {}
 	self.activeTab = nil
 	self.topH = 30
@@ -71,7 +70,7 @@ _Tab = {}
 _Tab.__index = _Tab
 
 function _Tab.new(x, y, w, h, value, parent)
-	if not parent and not isComponent(parent, 'tabpanel') then
+	if not isComponent(parent, 'tabpanel') then
 		return
 	end
 

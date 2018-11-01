@@ -1,5 +1,4 @@
 Input = {}
-Input.__index = Input
 
 
 function Input.new(x, y, w, h, value)
@@ -88,7 +87,7 @@ function Input:onKey(key, down)
 			self.value = self.value..clipboard
 		end
 	elseif (self.active and key == 'enter' and down) then
-		dxCallEvent(self, 'accepted')
+		self:emit('accepted')
 		self:setActive(false)
 	end
 end

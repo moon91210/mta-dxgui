@@ -1,9 +1,8 @@
 Window = {}
-Window.__index = Window
 
 
 function Window.new(x, y, w, h, value)
-	local self = setmetatable(Component.new("window", x, y, w, h), Window)
+	local self = inherit(Component.new("window", x, y, w, h), Window)
 
 	self.value = value or ""
 	self.title_h = 30
@@ -15,7 +14,7 @@ function Window.new(x, y, w, h, value)
 		:setParent(dragArea)
 		:on("click", function()
 			self.visible = false
-			dxCallEvent(self, "close")
+			self:emit('close')
 		end)
 
 	return self

@@ -1,13 +1,12 @@
 DragArea = {}
-DragArea.__index = DragArea
 
 
 function DragArea.new(x, y, w, h)
 	local self
 	if (not x) then
-		self = setmetatable(Component.new("dragarea", 0, 0, 0, 0), DragArea)
+		self = inherit(Component.new("dragarea", 0, 0, 0, 0), DragArea)
 	else
-		self = setmetatable(Component.new("dragarea", x, y, w, h), DragArea)
+		self = inherit(Component.new("dragarea", x, y, w, h), DragArea)
 	end
 	self.auto = x and false or true
 	self.dragging = false

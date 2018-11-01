@@ -1,9 +1,8 @@
 Gridlist = {}
-Gridlist.__index = Gridlist
 
 
 function Gridlist.new(x, y, w, h)
-	local self = setmetatable(Component.new("gridlist", x, y, w, h), Gridlist)
+	local self = inherit(Component.new("gridlist", x, y, w, h), Gridlist)
 	self.titleh = 25
 	self.columns = {}
 	self.items = {}

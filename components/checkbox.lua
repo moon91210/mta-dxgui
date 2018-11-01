@@ -1,9 +1,8 @@
 Checkbox = {}
-Checkbox.__index = Checkbox
 
 
 function Checkbox.new(x, y, w, h, value)
-	local self = setmetatable(Component.new("checkbox", x, y, w, h), Checkbox)
+	local self = inherit(Component.new("checkbox", x, y, w, h), Checkbox)
 	self.value = value
 	self.selected = false
 
@@ -28,7 +27,7 @@ end
 
 function Checkbox:toggle()
 	self.selected = not self.selected
-	dxCallEvent(self, "toggle", self.selected)
+	self:emit('toggle', self.selected)
 end
 
 setmetatable(Checkbox, {__call = function(_, ...) return Checkbox.new(...) end})

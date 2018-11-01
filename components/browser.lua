@@ -1,20 +1,19 @@
 Browser = {}
-Browser.__index = Browser
 
 
 function Browser.new(x, y, w, h, url)
-    local self = setmetatable(Component.new('browser', x, y, w, h), Browser)
+    local self = inherit(Component.new('browser', x, y, w, h), Browser)
     self.browser = createBrowser(w, h, false, true)
 
     local function onCreated()
         if url then
             self:loadURL(url)
         end
-        dxCallEvent(self, 'created')
+        self:emit('created', self)
     end
 
     local function onReady()
-        dxCallEvent(self, 'documentReady')
+        self:emit('documentReady', self)
     end
 
     self:on('destroy', function()

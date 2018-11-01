@@ -12,47 +12,33 @@ addEventHandler("onClientResourceStart", resourceRoot, function()
 	addEventHandler("onClientRender", root, globalRender)
 end)
 
---showCursor(true)
-
-Table = {}
-
-function Table.new(o)
-	return setmetatable(o or {}, {__index = function(t, k) return table[k] end})
+function inherit(self, class)
+	for k, v in pairs(class) do
+		if k ~= 'new' and type(v) == 'function' then
+			self[k] = v
+		end
+	end
+	return self
 end
 
-function table:removeByValue(v)
-	for i=1, #self do
-		if (self[i] == v) then
-			self:remove(i)
+function table.removeByValue(t, v)
+	for i=#t, 1, -1 do
+		if (t[i] == v) then
+			table.remove(t, i)
 		end
 	end
 	return false
 end
 
-function table:copy()
+function table.copy(t)
 	local new = Array.new()
-	for k,v in pairs(self) do
-		if (type(v) == "table") then
-			v = v:copy()
+	for k,v in pairs(t) do
+		if (type(v) == 'table') then
+			v = table.copy(v)
 		end
 		new[k] = v
 	end
 	return new
-end
-
--- Handlers
-function dxCallEvent(self, event, ...)
-	local events = self.events
-	for i=#events, 1, -1 do
-		local evt = events[i]
-		if evt.event == event then
-			evt.callback(unpack(arg))
-			if evt.once then
-				table.remove(events, i)
-			end
-		end
-	end
-	return false
 end
 
 function isComponent(comp, typ)
@@ -65,70 +51,6 @@ function isComponent(comp, typ)
 	return false
 end
 
-function dxKeyHandler(self, key, down)
-	if (not self.visible) then return end
-
-	for i=1, #self.children  do
-		local child = self.children[i]
-		if (dxKeyHandler(child, key, down)) then
-			return true
-		end
-	end
-
-	if(self.onKey) then
-		self:onKey(key, down)
-	end
-end
-
-function dxClickHandler(self, btn, state, mx, my)
-	if (not self.visible) then return end
-
-	local children = self.children
-
-	for i=1, #children do
-		if (dxClickHandler(children[i], btn, state, mx, my)) then
-			return true
-		end
-	end
-
-	-- exception for images with fitmode set to "nostretch"
-	local w, h = self.w, self.h
-	if (self.type == "image" and self:getFitMode() == "nostretch" and self:getPixels()) then
-		local fs = self:getFitSize()
-		w, h = fs.w, fs.h
-	end
-
-	local mouseOver = isMouseOver(self, w, h)
-	
-	if (self.onClick) then
-		self:onClick(btn, state)
-	end
-
-	if (btn == "left" or btn == "middle") then
-		if (state == "down")  then
-			if (mouseOver) then
-				self.mouseDown = true
-				self:setOnTop()
-				if (not self.parent) then
-					return true
-				end
-			end
-		else
-			if (mouseOver and self.mouseDown) then
-				if (self.focused) then
-					dxCallEvent(self, "click", btn)
-					self.mouseDown = false
-					return true
-				end
-			end
-			self.mouseDown = false
-		end
-	end
-
-	return false
-end
-
--- Global Methods
 function isMouseOver(self, w, h)
 	return mouseX and w and h and mouseX >= self.x and mouseX <= self.x + w and mouseY >= self.y and mouseY <= self.y + h
 end
@@ -151,9 +73,11 @@ function map(n, start1, stop1, start2, stop2)
 end
 
 function assert(statement, message, level)
+	local funcName = debug.getinfo(2, 'n').name or 'unknown'
+	message = message or 'assertion failed!'
+	level = level or 3
 	if not statement then
-		local funcName = debug.getinfo(2, 'n').name or 'unknown'
-		error('['..funcName..'] '..message or '', level or 3)
+		error('['..funcName..'] '..message, level)
 	end
 end
 

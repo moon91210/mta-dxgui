@@ -1,9 +1,8 @@
 Button = {}
-Button.__index = Button
 
 
 function Button.new(x, y, w, h, value)
-	local self = setmetatable(Component.new("button", x, y, w, h), Button)
+	local self = inherit(Component.new("button", x, y, w, h), Button)
 	self.value = value or ""
 	self.color = tocolor(55,55,165,255)
 	return self

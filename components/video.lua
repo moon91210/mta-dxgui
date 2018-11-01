@@ -1,9 +1,8 @@
 Video = {}
-Video.__index = Video
 
 
 function Video.new(x, y, w, h, src)
-    local self = setmetatable(Component.new('video', x, y, w, h), Video)
+    local self = inherit(Component.new('video', x, y, w, h), Video)
     self.browser = Browser(w, h, true, true)
 
     local function loadUrl()
