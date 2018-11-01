@@ -54,7 +54,7 @@ function Gridlist:addColumn(title, width)
 	check('s', {title})
 
 	local col = {
-		autosize = not width,
+		fixedSize = not width,
 		value = tostring(title),
 		titleWidth = dxGetTextWidth(title, self.textSize),
 		checkThumbnails = false
@@ -110,11 +110,16 @@ function Gridlist:fitItemsToColumns()
 	for i=1, #self.columns do
 		local col = self.columns[i]
 
-		col.width = col.titleWidth + self.titleSpacing
+		if col.fixedSize then
+			col.width = col.titleWidth + self.titleSpacing
 
-		for j=1, #self.items do
-			local itemVal = self.items[j].values[i].width + self.titleSpacing
-			col.width = math.max(itemVal, col.width)
+			for j=1, #self.items do
+				local itemVal = self.items[j].values[i]
+				if itemVal then
+					local width = itemVal.width + self.titleSpacing
+					col.width = math.max(width, col.width)
+				end
+			end
 		end
 	end
 end
@@ -278,7 +283,8 @@ function Gridlist:drawItems()
 
 		for j=1, columnCount do
 			local col = self.columns[j]
-			local val = item.values[j].value
+			local itemVal = item.values[j]
+			local val = itemVal and itemVal.value
 
 			if val then
 				if col.checkThumbnails then
