@@ -29,15 +29,8 @@ function Window:draw()
 	dxDrawText(self.value, self.x, self.y, self.x + self.w, self.y + self.titleh, tocolor(225,225,225,255), 1.5, "tahoma", "center", "center")
 	-- main bg
 	dxDrawRectangle(self.x, self.y + self.titleh, self.w, self.h - self.titleh, color)
-end
 
-function Window:drawBorders()
-	local size = 6
-	local color = tocolor(132,132,132,55)
-	dxDrawLine(self.x-size, self.y-size/2, self.x+size + self.w, self.y-size/2, color, size)--top
-	dxDrawLine(self.x-size, self.y+size/2 + self.h, self.x+size + self.w, self.y+size/2 + self.h, color, size)--bottom
-	dxDrawLine(self.x-size/2, self.y, self.x-size/2, self.y + self.h, color, size)--left
-	dxDrawLine(self.x+size/2 + self.w, self.y, self.x+size/2 + self.w, self.y + self.h, color, size)--right
+	self:drawBorders(6, tocolor(132,132,132,55))
 end
 
 setmetatable(Window, {__call = function(_, ...) return Window.new(...) end})

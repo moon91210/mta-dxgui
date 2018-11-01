@@ -43,10 +43,6 @@ function Component:update()
 	if (self.draw) then
 		self:draw()
 	end
-
-	if (self.drawBorders) then
-		self:drawBorders()
-	end
 	
 	for i=#self.children, 1, -1 do
 		self.children[i]:update()
@@ -214,4 +210,13 @@ function Component:align(state)
 		end
 	end
 	return self
+end
+
+function Component:drawBorders(size, color)
+	local size = size or 2
+	local color = color or tocolor(255,55,55,200)
+	dxDrawLine(self.x-size, self.y-size/2, self.x+size + self.w, self.y-size/2, color, size)--top
+	dxDrawLine(self.x-size, self.y+size/2 + self.h, self.x+size + self.w, self.y+size/2 + self.h, color, size)--bottom
+	dxDrawLine(self.x-size/2, self.y, self.x-size/2, self.y + self.h, color, size)--left
+	dxDrawLine(self.x+size/2 + self.w, self.y, self.x+size/2 + self.w, self.y + self.h, color, size)--right
 end

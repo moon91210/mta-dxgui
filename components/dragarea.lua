@@ -76,8 +76,8 @@ function DragArea:draw()
 
 	self.pmx, self.pmy = mouseX, mouseY
 
-	if (self.show) then
-		dxDrawRectangle(self.x, self.y, self.w, self.h, tocolor(55,55,55,200))
+	if self.show then
+		self:drawBorders(2, tocolor(255,55,55,200))
 	end
 end
 
