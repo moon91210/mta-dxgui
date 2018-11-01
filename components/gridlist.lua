@@ -25,7 +25,9 @@ end
 
 local function updateRT(self)
 	dxSetRenderTarget(self.rt, true)
-	self:fitItemsToColumns()
+	if self.autoSizeColumn then
+		self:fitItemsToColumns()
+	end
 	self:drawItems()
 	dxSetRenderTarget()
 end
@@ -54,7 +56,7 @@ function Gridlist:addColumn(title, width)
 	check('s', {title})
 
 	local col = {
-		fixedSize = not width,
+		fixedSize = not not width,
 		value = tostring(title),
 		titleWidth = dxGetTextWidth(title, self.textSize),
 		checkThumbnails = false
@@ -106,11 +108,10 @@ function Gridlist:setColumnWidth(colIndex, width)
 end
 
 function Gridlist:fitItemsToColumns()
-	if not self.autoSizeColumn then return end
 	for i=1, #self.columns do
 		local col = self.columns[i]
 
-		if col.fixedSize then
+		if not col.fixedSize then
 			col.width = col.titleWidth + self.titleSpacing
 
 			for j=1, #self.items do
