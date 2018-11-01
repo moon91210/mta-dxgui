@@ -48,9 +48,8 @@ function Emitter:removeOn(evname, callback)
 	local evtbl = self._on[evname]
 	if evtbl then
 		for i=1, #evtbl do
-			if evtbl[i].callback == callback then
-				table.remove(evtbl, i)
-				break
+			if evtbl[i] == callback then
+				return table.remove(evtbl, i)
 			end
 		end
 	end
