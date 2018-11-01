@@ -24,6 +24,9 @@
     <script src="components/tabpanel.lua" type="client" cache="false"/>
     <script src="components/browser.lua" type="client" cache="false"/>
 
+    <!-- extra -->
+    <script src="components/alert.lua" type="client" cache="false"/>
+
     <!-- tests -->
     <script src="demo/demo.lua" type="client"/>
     <script src="demo/demo_s.lua" type="server"/>
@@ -32,5 +35,5 @@
     <file src="img/corner.png"/>
     <file src="img/button.png"/>
     <file src="img/broken.png"/>
-    <file src="components/test.webm"/>
+    <file src="img/sign-info-icon.png"/>
 </meta>
