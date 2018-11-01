@@ -187,11 +187,11 @@ function Component:setVisible(v)
 	return self
 end
 
-function Component:getText()
+function Component:getValue()
 	return self.value
 end
 
-function Component:setText(v)
+function Component:setValue(v)
 	self.value = v
 	return self
 end
