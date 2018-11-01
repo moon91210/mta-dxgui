@@ -88,7 +88,6 @@ function Input:onKey(key, down)
 		end
 	elseif (self.active and key == 'enter' and down) then
 		self:emit('accepted')
-		self:setActive(false)
 	end
 end
 
