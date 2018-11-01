@@ -146,6 +146,17 @@ function Component:setToBack()
 	return self
 end
 
+function Component:setDraggable(state)
+	if state then
+		self.dragArea = DragArea():setParent(self)
+	else
+		if isComponent(self.dragArea) then
+			self.dragArea:destroy()
+		end
+	end
+	return self
+end
+
 function Component:getPosition()
 	return self.x, self.y
 end
