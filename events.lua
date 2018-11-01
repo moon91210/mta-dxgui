@@ -28,14 +28,14 @@ function dxKeyHandler(self, key, down)
 	if (not self.visible) then return end
 
 	for i=1, #self.children do
-		local child = self.children[i]
-		if (dxKeyHandler(child, key, down)) then
+		if (dxKeyHandler(self.children[i], key, down)) then
 			return true
 		end
 	end
 
 	if (self.onKey and self.focused) then
 		self:onKey(key, down)
+		return true
 	end
 end
 
@@ -59,7 +59,7 @@ function dxClickHandler(self, btn, state, mx, my)
 
 	local mouseOver = isMouseOver(self, w, h)
 	
-	if (self.onClick) then
+	if (self.onClick and self.focused) then
 		self:onClick(btn, state)
 	end
 
@@ -75,7 +75,6 @@ function dxClickHandler(self, btn, state, mx, my)
 		else
 			if (mouseOver and self.mouseDown) then
 				if (self.focused) then
-					-- dxCallEvent(self, 'click', btn)
 					self:emit('click', btn)
 					self.mouseDown = false
 					return true
