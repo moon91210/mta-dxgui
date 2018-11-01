@@ -254,6 +254,11 @@ function Gridlist:drawItems()
 		local xOff = 0
 
 		local item = self.items[i]
+
+		if not item then
+			return
+		end
+
 		local clickArea = {
 			x = self.x,
 			y = self.y + yOff,
@@ -291,7 +296,7 @@ function Gridlist:drawItems()
 end
 
 function Gridlist:onKey(key, down)
-	if (not self.mouseOver or not self.focused) then return end
+	if (not self.mouseOver) then return end
 	
 	self.updated = false
 
@@ -312,6 +317,7 @@ function Gridlist:onKey(key, down)
 				self:setSelectedItem(i)
 				if item.onClick and type(item.onClick) == 'function' then
 					item.onClick()
+					return
 				end
 			end
 		end
