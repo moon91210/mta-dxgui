@@ -22,6 +22,7 @@ function DragArea:draw()
 
 	if not parent then return end
 
+	local x, y = self.x, self.y
 	local w, h = self.w, self.h
 	local fs
 
@@ -41,14 +42,15 @@ function DragArea:draw()
 		self.h = fs.h
 	else
 		if (not fs) then
-			w = parent.w
-			h = parent.h
+			self.w = self.w ~= 0 and self.w or parent.w
+			self.h = self.h ~= 0 and self.h or parent.h
 		end
 	end
+	
 
 	local pmx, pmy = self.pmx, self.pmy
 
-	local mo = parent.focused and isMouseOverPos(self.x, self.y, self.w, self.h)
+	local mo = parent.focused and isMouseOverPos(x, y, self.w, self.h)
 
 	if (pmx and mouseX and self.mouseDown and mo or mouseX and self.mouseDown and self.dragging) then
 		local children = self.children
