@@ -9,7 +9,7 @@ function Alert(message, callback)
 		self:destroy()
 	end)
 
-	self.label = Label(130, 40, self.w*0.65, 30, message, 1.5, tocolor(255,255,255), true, 'arial', 'center', 'top')
+	self.label = Label(130, 40, self.w*0.65, 30, message, 1.5, tocolor(255,255,255), true, 'arial', 'left', 'top')
 		:setParent(self)
 
 	self.button = Button(0, 170, 120, 40, 'OK')
