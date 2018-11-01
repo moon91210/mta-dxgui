@@ -11,14 +11,12 @@ end
 function Emitter:on(evname, callback)
 	assert(type(evname) == 'string', 'arg1 not a string')
 	assert(type(callback) == 'function', 'arg2 not a function')
-	local ev = {}
-	ev.callback = callback
 	local evtbl = self._on[evname]
 	if not evtbl then
 		evtbl = {}
 		self._on[evname] = evtbl
 	end
-	table.insert(evtbl, ev)
+	table.insert(evtbl, callback)
 	return self
 end
 
@@ -34,13 +32,15 @@ function Emitter:emit(evname, ...)
 	local evtbl = self._on[evname]
 	if evtbl then
 		for i=1, #evtbl do
-			evtbl[i].callback(...)
+			evtbl[i](...)
 		end
 	end
-	local ev = self._once[evname]
+	local ev = self._once and self._once[evname]
 	if ev then
 		ev(...)
-		self._once[evname] = nil
+		if self._once then
+			self._once[evname] = nil
+		end
 	end
 end
 
