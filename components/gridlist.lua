@@ -79,31 +79,6 @@ function Gridlist:removeColumn(colIndex)
 	updateRT()
 end
 
-function Gridlist:setColumnWidth(colIndex, width)
-	check('nn', {colIndex, width})
-	local col = self.columns[colIndex]
-	col.width = width
-	col.fixedSize = true
-end
-
-function Gridlist:fitColumnsToItems()
-	for i=1, #self.columns do
-		local col = self.columns[i]
-
-		if not col.fixedSize then
-			col.width = col.titleWidth + self.titleSpacing
-
-			for j=1, #self.items do
-				local itemVal = self.items[j].values[i]
-				if itemVal then
-					local width = itemVal.width + self.titleSpacing
-					col.width = math.max(width, col.width)
-				end
-			end
-		end
-	end
-end
-
 function Gridlist:setColumnCheckThumbnails(colIndex, state)
 	check('b', {state})
 
@@ -114,6 +89,25 @@ function Gridlist:setColumnCheckThumbnails(colIndex, state)
 			self.items[i].values[colIndex] = parseItemValues(self, val)[1]
 		end
 	end
+end
+
+function Gridlist:addItem(values, onClick)
+	assert(#self.columns ~= 0, "the gridlist doesn't have any columns")
+
+	local item = {
+		values = parseItemValues(self, values),
+		onClick = onClick or nil
+	}
+
+	table.insert(self.items, item)
+	updateRT(self)
+	return item
+end
+
+function Gridlist:removeItem(itemIndex)
+	check('n', {itemIndex})
+	table.remove(self.items, itemIndex)
+	updateRT(self)	
 end
 
 function Gridlist:getSelectedItem()
@@ -145,23 +139,29 @@ function Gridlist:getItemCount()
 	return #self.items
 end
 
-function Gridlist:addItem(values, onClick)
-	assert(#self.columns ~= 0, "the gridlist doesn't have any columns")
-
-	local item = {
-		values = parseItemValues(self, values),
-		onClick = onClick or nil
-	}
-
-	table.insert(self.items, item)
-	updateRT(self)
-	return item
+function Gridlist:setColumnWidth(colIndex, width)
+	check('nn', {colIndex, width})
+	local col = self.columns[colIndex]
+	col.width = width
+	col.fixedSize = true
 end
 
-function Gridlist:removeItem(itemIndex)
-	check('n', {itemIndex})
-	table.remove(self.items, itemIndex)
-	updateRT(self)	
+function Gridlist:fitColumnsToItems()
+	for i=1, #self.columns do
+		local col = self.columns[i]
+
+		if not col.fixedSize then
+			col.width = col.titleWidth + self.titleSpacing
+
+			for j=1, #self.items do
+				local itemVal = self.items[j].values[i]
+				if itemVal then
+					local width = itemVal.width + self.titleSpacing
+					col.width = math.max(width, col.width)
+				end
+			end
+		end
+	end
 end
 
 function Gridlist:sort(colIndex, reverse)
