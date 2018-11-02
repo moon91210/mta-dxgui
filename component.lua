@@ -21,6 +21,7 @@ function Component.new(typ, x, y, w, h)
 	self.focused = false
 	self.mouseOver = false
 	self.mouseDown = false
+	self.dragArea = nil
 
 	Emitter.new(self)
 
@@ -142,10 +143,13 @@ function Component:setToBack()
 end
 
 function Component:setDraggable(state)
+	check('b', {state})
 	if state then
-		self.dragArea = DragArea():setParent(self)
+		if not isComponent(self.dragArea, 'dragarea') then
+			self.dragArea = DragArea():setParent(self)
+		end
 	else
-		if isComponent(self.dragArea) then
+		if isComponent(self.dragArea, 'dragarea') then
 			self.dragArea:destroy()
 		end
 	end
