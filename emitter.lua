@@ -27,6 +27,17 @@ function Emitter:once(evname, callback)
 	return self
 end
 
+function Emitter:off(evname, callback)
+	local evtbl = self._on[evname]
+	if evtbl then
+		for i=1, #evtbl do
+			if evtbl[i] == callback then
+				return table.remove(evtbl, i)
+			end
+		end
+	end
+end
+
 function Emitter:emit(evname, ...)
 	assert(type(evname) == 'string', 'arg1 not a string')
 	local evtbl = self._on[evname]
@@ -40,17 +51,6 @@ function Emitter:emit(evname, ...)
 		ev(...)
 		if self._once then
 			self._once[evname] = nil
-		end
-	end
-end
-
-function Emitter:removeOn(evname, callback)
-	local evtbl = self._on[evname]
-	if evtbl then
-		for i=1, #evtbl do
-			if evtbl[i] == callback then
-				return table.remove(evtbl, i)
-			end
 		end
 	end
 end
