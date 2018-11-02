@@ -52,13 +52,6 @@ local function parseItemValues(self, values)
 	return parsed
 end
 
-function Gridlist:clear()
-	self.items = {}
-	self.selectedItem = 0
-	self.sp = 1
-	updateRT(self)
-end
-
 function Gridlist:addColumn(title, width)
 	check('s', {title})
 
@@ -79,6 +72,13 @@ function Gridlist:removeColumn(colIndex)
 	updateRT()
 end
 
+function Gridlist:setColumnWidth(colIndex, width)
+	check('nn', {colIndex, width})
+	local col = self.columns[colIndex]
+	col.width = width
+	col.fixedSize = true
+end
+
 function Gridlist:setColumnCheckThumbnails(colIndex, state)
 	check('b', {state})
 
@@ -87,6 +87,24 @@ function Gridlist:setColumnCheckThumbnails(colIndex, state)
 		for i=1, #self.items do
 			local val = self.items[i].values[colIndex].value
 			self.items[i].values[colIndex] = parseItemValues(self, val)[1]
+		end
+	end
+end
+
+function Gridlist:fitColumnsToItems()
+	for i=1, #self.columns do
+		local col = self.columns[i]
+
+		if not col.fixedSize then
+			col.width = col.titleWidth + self.titleSpacing
+
+			for j=1, #self.items do
+				local itemVal = self.items[j].values[i]
+				if itemVal then
+					local width = itemVal.width + self.titleSpacing
+					col.width = math.max(width, col.width)
+				end
+			end
 		end
 	end
 end
@@ -139,29 +157,11 @@ function Gridlist:getItemCount()
 	return #self.items
 end
 
-function Gridlist:setColumnWidth(colIndex, width)
-	check('nn', {colIndex, width})
-	local col = self.columns[colIndex]
-	col.width = width
-	col.fixedSize = true
-end
-
-function Gridlist:fitColumnsToItems()
-	for i=1, #self.columns do
-		local col = self.columns[i]
-
-		if not col.fixedSize then
-			col.width = col.titleWidth + self.titleSpacing
-
-			for j=1, #self.items do
-				local itemVal = self.items[j].values[i]
-				if itemVal then
-					local width = itemVal.width + self.titleSpacing
-					col.width = math.max(width, col.width)
-				end
-			end
-		end
-	end
+function Gridlist:clear()
+	self.items = {}
+	self.selectedItem = 0
+	self.sp = 1
+	updateRT(self)
 end
 
 function Gridlist:sort(colIndex, reverse)
