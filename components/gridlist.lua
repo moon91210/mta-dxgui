@@ -88,7 +88,7 @@ function Gridlist:setColumnCheckThumbnails(colIndex, state)
 	end
 end
 
-function Gridlist:getSelectedItemIndex()
+function Gridlist:getSelectedItem()
 	return self.selectedItem
 end
 
