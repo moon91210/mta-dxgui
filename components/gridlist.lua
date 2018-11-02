@@ -2,7 +2,7 @@ Gridlist = {}
 
 
 function Gridlist.new(x, y, w, h)
-	local self = inherit(Component.new("gridlist", x, y, w, h), Gridlist)
+	local self = inherit(Component.new('gridlist', x, y, w, h), Gridlist)
 	self.titleh = 25
 	self.columns = {}
 	self.items = {}
@@ -19,20 +19,20 @@ function Gridlist.new(x, y, w, h)
 	self.scrollbarVisible = true
 	self.textSize = 1.3
 	self.titleSpacing = 27
-	self.autoSizeColumn = true
+	self.autoSizeColumns = true
 	return self
 end
 
 local function updateRT(self)
 	dxSetRenderTarget(self.rt, true)
-	if self.autoSizeColumn then
-		self:fitItemsToColumns()
+	if self.autoSizeColumns then
+		self:fitColumnsToItems()
 	end
 	self:drawItems()
 	dxSetRenderTarget()
 end
 
-local function parseItemValues(self, values, parseSingle)
+local function parseItemValues(self, values)
 	values = type(values) == 'table' and values or {values}
 	local parsed = {}
 	for i=1, #values do
@@ -49,7 +49,14 @@ local function parseItemValues(self, values, parseSingle)
 
 		table.insert(parsed, val)
 	end
-	return parseSingle and parsed[1] or parsed
+	return parsed
+end
+
+function Gridlist:clear()
+	self.items = {}
+	self.selectedItem = 0
+	self.sp = 1
+	updateRT(self)
 end
 
 function Gridlist:addColumn(title, width)
@@ -66,48 +73,20 @@ function Gridlist:addColumn(title, width)
 	return col
 end
 
-function Gridlist:removeColumn(title)
-	check('s', {title})
-
-	for i=#self.columns, 1, -1 do
-		if self.columns[i].value == title then
-			table.remove(self.columns, i)
-		end
-	end	
-end
-
-function Gridlist:setColumnCheckThumbnails(colIndex, state)
-	check('b', {state})
-
-	self.columns[colIndex].checkThumbnails = state
-	if state then
-		for i=1, #self.items do
-			local val = self.items[i].values[colIndex].value
-			self.items[i].values[colIndex] = parseItemValues(self, val, true)
-		end
-	end
-end
-
-function Gridlist:getSelectedItem()
-	return self.selectedItem
-end
-
-function Gridlist:setSelectedItem(index)
-	self.selectedItem = index
-	updateRT(self)
-end
-
-function Gridlist:getItemValue(itemIndex, colIndex)
-	check('nn', {itemIndex, colIndex})
-	return self.items[itemIndex].values[colIndex]
+function Gridlist:removeColumn(colIndex)
+	check('n', {colIndex})
+	table.remove(self.columns, colIndex)
+	updateRT()
 end
 
 function Gridlist:setColumnWidth(colIndex, width)
 	check('nn', {colIndex, width})
-	self.columns[colIndex].width = width
+	local col = self.columns[colIndex]
+	col.width = width
+	col.fixedSize = true
 end
 
-function Gridlist:fitItemsToColumns()
+function Gridlist:fitColumnsToItems()
 	for i=1, #self.columns do
 		local col = self.columns[i]
 
@@ -123,6 +102,47 @@ function Gridlist:fitItemsToColumns()
 			end
 		end
 	end
+end
+
+function Gridlist:setColumnCheckThumbnails(colIndex, state)
+	check('b', {state})
+
+	self.columns[colIndex].checkThumbnails = state
+	if state then
+		for i=1, #self.items do
+			local val = self.items[i].values[colIndex].value
+			self.items[i].values[colIndex] = parseItemValues(self, val)[1]
+		end
+	end
+end
+
+function Gridlist:getSelectedItem()
+	return self.selectedItem
+end
+
+function Gridlist:setSelectedItem(index)
+	self.selectedItem = index
+	updateRT(self)
+end
+
+function Gridlist:getItemValue(itemIndex, colIndex)
+	check('n', {itemIndex})
+	local vals = self.items[itemIndex].values
+	return type(colIndex) == 'number' and vals[colIndex] or vals
+end
+
+function Gridlist:setItemValue(itemIndex, colIndex, value)
+	check('nns', {itemIndex, colIndex, value})
+	self.items[itemIndex].values[colIndex] = parseItemValues(self, value)[1]
+end
+
+function Gridlist:getItemByIndex(itemIndex)
+	check('n', {itemIndex})
+	return self.items[itemIndex]
+end
+
+function Gridlist:getItemCount()
+	return #self.items
 end
 
 function Gridlist:addItem(values, onClick)
@@ -144,43 +164,7 @@ function Gridlist:removeItem(itemIndex)
 	updateRT(self)	
 end
 
-function Gridlist:setItemValue(itemIndex, colIndex, value)
-	check('nns', {itemIndex, colIndex, value})
-	self.items[itemIndex].values[colIndex] = parseItemValues(self, value, true)
-end
-
-function Gridlist:getItemByIndex(itemIndex)
-	check('n', {itemIndex})
-	return self.items[itemIndex]
-end
-
-function Gridlist:getCount()
-	return #self.items
-end
-
-function Gridlist:clear()
-	self.items = {}
-	self.selectedItem = 0
-	self.sp = 1
-	updateRT(self)
-end
-
-function Gridlist:sort(reverse)
-	-- need to sort numbers first then strings?
-	local col = self.columns[1]
-
-	if (col) then
-		table.sort(self.items, function(a, b)
-			if (reverse) then
-				return a.values[1] > b.values[1]
-			end
-			return a.values[1] < b.values[1]
-		end)
-		updateRT(self)
-	end
-end
-
-function Gridlist:sortByColumn(colIndex, reverse)
+function Gridlist:sort(colIndex, reverse)
 	check('n', {colIndex})
 	local col = self.columns[colIndex]
 
