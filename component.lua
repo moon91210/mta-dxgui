@@ -114,12 +114,11 @@ function Component:addChildren(children)
 end
 
 function Component:removeParent()
-	if not self.parent then
-		return self
+	if self.parent then
+		table.removeByValue(self.parent.children, self)
+		self.parent = nil
+		table.insert(components, self)
 	end
-	table.removeByValue(self.parent.children, self)
-	self.parent = nil
-	table.insert(components, self)
 	return self
 end
 
