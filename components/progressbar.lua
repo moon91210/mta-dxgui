@@ -19,9 +19,8 @@ function ProgressBar:draw()
 end
 
 function ProgressBar:setProgress(value)
-	if tonumber(value) then
-		self.progress = constrain(value, 0, 1)
-	end
+	check('n', {value})
+	self.progress = constrain(value, 0, 1)
 	return self
 end
 
