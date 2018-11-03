@@ -31,4 +31,4 @@ btn2:on('click', function() btn2.value = 'clicked' end)
 
 Copyright 2018 Tails
 
-Licensed under the AGPLv3: https://www.gnu.org/licenses/agpl-3.0.html
+Licensed under the LGPLv3: https://www.gnu.org/licenses/lgpl-3.0.html
