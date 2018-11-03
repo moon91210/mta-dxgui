@@ -1,14 +1,11 @@
 Browser = {}
 
 
-function Browser.new(x, y, w, h, url)
+function Browser.new(x, y, w, h, isLocal, isTransparent)
     local self = inherit(Component.new('browser', x, y, w, h), Browser)
-    self.browser = createBrowser(w, h, false, true)
+    self.browser = createBrowser(w, h, isLocal or false, isTransparent or false)
 
     local function onCreated()
-        if url then
-            self:loadURL(url)
-        end
         self:emit('created', self)
     end
 
