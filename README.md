@@ -1,6 +1,16 @@
-# dx-gui (A work in progress)
+# DX-GUI (A framework for MTA)
 
-Making gui with dx-gui is super easy:
+> Note: This framework is currently unstable and in development. Every piece of code is subject to change so some functions may be changed completely or may not work at all in the future. Please take this into consideration when using this framework in your projects.
+
+DX-GUI allows scripters to build beautiful GUI with just a few lines of code.
+
+My aim is to make this framework be faster and more flexible than DGS by writing functions that are simple to use and allowing you to chain methods as well as writing code as efficient as possible.
+
+It's also very easy to create new components for DX-GUI.
+
+# Example
+
+Making gui with dx-gui is really easy:
 
 ```lua
 -- Create a window
