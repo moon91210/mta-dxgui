@@ -1,6 +1,6 @@
-# DX-GUI (A framework for MTA)
-
 > Note: This framework is currently unstable and in development. Every piece of code is subject to change so some functions may be changed completely or may not work at all in the future. Please take this into consideration when using this framework in your projects.
+
+# DX-GUI (A framework for MTA)
 
 DX-GUI allows scripters to build beautiful GUI with just a few lines of code.
 
