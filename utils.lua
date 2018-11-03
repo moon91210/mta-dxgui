@@ -89,7 +89,9 @@ function check(pattern, arg, level)
 		local t = #arg > 0 and type(arg[i]) or nil
 		if t ~= types[c] then
 			local msg = "bad argument #%s in '%s' (%s expected, got %s)"
-			error(msg:format(i, debug.getinfo(2, "n").name, types[c], tostring(t)), level or 3)
+			level = level or 3
+			local fname =  debug.getinfo(2, "n").name or '?'
+			error(msg:format(i, fname, types[c], tostring(t)), level)
 		end
 	end
 end
