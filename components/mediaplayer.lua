@@ -13,7 +13,7 @@ function MediaPlayer.new(x, y, w, h)
 		:on('click', function()
 			if isComponent(self.browser) then
 				self.full = not self.full
-				self.browser:setFullscreen(self.full)
+				self:setFullscreen(self.full)
 			end
 		end)
 
@@ -53,11 +53,20 @@ function MediaPlayer:play(path, mediaType)
 			:setParent(self)
 			:once('created', function()
 				f()
-				self.browser:setVolume(self.volume)
+				self:setVolume(self.volume)
+				self:setFullscreen(self.full)
 			end)
 	end
 
 	return self
+end
+
+function MediaPlayer:setFullscreen(full)
+	check('b', {full})
+	self.full = full
+	if isComponent(self.browser) then
+		self.browser:setFullscreen(full)
+	end
 end
 
 function MediaPlayer:setVolume(vol)
