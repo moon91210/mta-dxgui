@@ -36,8 +36,8 @@ function Browser:getSource(callback)
 end
 
 function Browser:resize(w, h)
-	self.w = w
-	self.h = h
+	self.w = tonumber(w) and w or self.w
+	self.h = tonumber(h) and h or self.h
 	resizeBrowser(self.browser, w, h)
 end
 
