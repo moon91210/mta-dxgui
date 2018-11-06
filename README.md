@@ -4,9 +4,9 @@
 
 DX-GUI allows scripters to build beautiful GUI with just a few lines of code.
 
-My aim is to make this framework be faster and more flexible than DGS by writing functions that are simple to use and allowing you to chain methods as well as writing code as efficient as possible.
+My aim is to make this framework be faster and more flexible than DGS by splitting everything up in separate modules which allows us to re-use code and also makes it easier to update the code and add changes.
 
-It's also very easy to create new components for DX-GUI.
+We try to make the functions easy to use and you're able to chain most of the component methods which increases usability a lot and it'll make your code shorter and easier to read.
 
 # Example
 
