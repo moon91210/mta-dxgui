@@ -1,4 +1,4 @@
-function Image(x, y, w, h, path, alpha)
+function Image(x, y, w, h, path, postGUI, alpha)
 	local self = Component.new('image', x, y, w, h)
 	local src
 	local tex
@@ -9,6 +9,7 @@ function Image(x, y, w, h, path, alpha)
 	local fitMode = 'stretch'
 	local ow = self.w
 	local oh = self.h
+	local postGUI = postGUI or false
 
 	self.alpha = alpha or 255 -- this needs to be a component variable (set/getAlpha)
 
@@ -111,14 +112,14 @@ function Image(x, y, w, h, path, alpha)
 
 		if (tex) then
 			local size = fitMode == "nostretch" and fitSize or {w=self.w,h=self.h}
-			dxDrawImage(self.x, self.y, size.w, size.h, tex, 0, 0, 0, tocolor(255,255,255,self.alpha))
+			dxDrawImage(self.x, self.y, size.w, size.h, tex, 0, 0, 0, tocolor(255,255,255,self.alpha), postGUI)
 		else
 			local color = tocolor(160,160,160,150)
 			dxDrawLine(self.x, self.y, self.x+self.w, self.y, color) -- top
 			dxDrawLine(self.x, self.y+self.h, self.x+self.w, self.y+self.h, color) -- bottom
 			dxDrawLine(self.x, self.y, self.x, self.y+self.h, color) -- left
 			dxDrawLine(self.x+self.w, self.y, self.x+self.w, self.y+self.h, color) -- right
-			dxDrawImage(self.x, self.y, 35, 35, "img/broken.png")
+			dxDrawImage(self.x, self.y, 35, 35, "img/broken.png", 0, 0, 0, tocolor(255,255,255,self.alpha), postGUI)
 		end
 	end
 
