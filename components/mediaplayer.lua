@@ -5,6 +5,17 @@ function MediaPlayer.new(x, y, w, h)
 	local self = inherit(Component.new('video', x, y, w, h), MediaPlayer)
 	self.mediaType = 'youtube'
 	self.browser = nil
+	self.full = false
+	self.volume = 1
+
+	Image(self.w - 45, self.h - 45, 45, 45, './img/fullscreen.png')
+		:setParent(self)
+		:on('click', function()
+			if isComponent(self.browser) then
+				self.full = not self.full
+				self.browser:setFullscreen(self.full)
+			end
+		end)
 
 	return self
 end
@@ -37,16 +48,23 @@ function MediaPlayer:play(path, mediaType)
 
 	if f then
 		self:stop()
-		
+
 		self.browser = Browser(0, 0, self.w, self.h)
 			:setParent(self)
-			:once('created', f)
-			:once('documentReady', function()
-				print('Now playing ' .. self:getTitle())
+			:once('created', function()
+				f()
+				self.browser:setVolume(self.volume)
 			end)
 	end
 
 	return self
+end
+
+function MediaPlayer:setVolume(vol)
+	self.volume = vol
+	if isComponent(self.browser) then
+		self.browser:setVolume(vol)
+	end
 end
 
 function MediaPlayer:getTitle()
