@@ -17,6 +17,8 @@ function Window.new(x, y, w, h, value)
 			self:emit('close')
 		end)
 
+	self:focus()
+
 	return self
 end
 
