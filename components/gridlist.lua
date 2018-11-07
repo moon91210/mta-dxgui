@@ -37,11 +37,11 @@ local function parseItemValues(self, values)
 	local parsed = {}
 	for i=1, #values do
 		local val = {}
-		val.value = tostring(values[i])
+		val.value = values[i]
 		val.width = dxGetTextWidth(val.value, self.textSize)
 
 		if self.columns[i].checkThumbnails then
-			if not fileExists(val.value) then
+			if not fileExists(tostring(val.value)) then
 				val.value = 'img/broken.png'
 			end
 			val.width = self.itemh
@@ -177,9 +177,9 @@ function Gridlist:sort(colIndex, reverse)
 	if (col) then
 		table.sort(self.items, function(a, b)
 			if (reverse) then
-				return a.values[colIndex] > b.values[colIndex]
+				return a.values[colIndex].value > b.values[colIndex].value
 			end
-			return a.values[colIndex] < b.values[colIndex]
+			return a.values[colIndex].value < b.values[colIndex].value
 		end)
 		updateRT(self)
 	end
