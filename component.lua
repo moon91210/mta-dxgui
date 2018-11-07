@@ -54,14 +54,14 @@ end
 
 function Component:focus()
 	if self.parent then
-		self.parent.focused = true
+		self.parent:focus()
 	else
-		self.focused = true
-	end
-	for i=1, #components do
-		if self ~= components[i] then
-			components[i].focused = false
+		for i=1, #components do
+			if self ~= components[i] then
+				components[i].focused = false
+			end
 		end
+		self.focused = true
 	end
 end
 
