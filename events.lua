@@ -7,9 +7,10 @@ end)
 addEventHandler('onClientClick', root, function(btn, state, mx, my)
 	for i = 1, #components do
 		local comp = components[i]
-		comp.focused = dxClickHandler(comp, btn, state, mx, my)
-		if (comp.focused) then
-			return false
+		local state = dxClickHandler(comp, btn, state, mx, my)
+		if (state) then
+			comp.focused = state
+			return true
 		end
 	end
 end)
@@ -40,7 +41,7 @@ function dxKeyHandler(self, key, down)
 end
 
 function dxClickHandler(self, btn, state, mx, my)
-	if (not self.visible) then return end
+	if (not self or not self.visible) then return end
 
 	local children = self.children
 
@@ -77,7 +78,7 @@ function dxClickHandler(self, btn, state, mx, my)
 				if (self.focused) then
 					self:emit('click', btn)
 					self.mouseDown = false
-					return true
+					return false
 				end
 			end
 			self.mouseDown = false

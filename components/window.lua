@@ -15,7 +15,12 @@ function Window.new(x, y, w, h, value)
 		:on("click", function()
 			self.visible = false
 			self:emit('close')
+			focus(2)
 		end)
+	
+	self:on('destroy', function()
+		focus(1)
+	end)
 
 	self:focus()
 
