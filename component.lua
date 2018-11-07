@@ -102,10 +102,11 @@ function Component:setParent(parent)
 	return self
 end
 
-function Component:addChildren(children)
-	if isComponent(children) then
-		children:setParent(self)
-	elseif type(children) == 'table' then
+function Component:addChild(...)
+	local children = isComponent(arg[1]) and arg
+		or type(arg[1]) == 'table' and arg[1]
+
+	if children then
 		for i=1, #children do
 			if isComponent(children[i]) then
 				children[i]:setParent(self)
