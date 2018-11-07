@@ -53,6 +53,8 @@ function Component:update()
 end
 
 function Component:focus()
+	if not self.visible then return end
+
 	if self.parent then
 		self.parent:focus()
 	else
