@@ -12,8 +12,7 @@ function MediaPlayer.new(x, y, w, h)
 		:setParent(self)
 		:on('click', function()
 			if isComponent(self.browser) then
-				self.full = not self.full
-				self:setFullscreen(self.full)
+				self:setFullscreen(not self.full)
 			end
 		end)
 
@@ -84,6 +83,7 @@ function MediaPlayer:stop()
 	if isComponent(self.browser) then
 		self.browser:destroy()
 		self.browser = nil
+		self:setFullscreen(false)
 	end
 end
 
