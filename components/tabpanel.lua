@@ -1,4 +1,5 @@
 TabPanel = {}
+local _Tab = {}
 
 
 function TabPanel.new(x, y, w, h)
@@ -66,15 +67,9 @@ end
 
 setmetatable(TabPanel, {__call = function(_, ...) return TabPanel.new(...) end})
 
-_Tab = {}
-_Tab.__index = _Tab
 
 function _Tab.new(x, y, w, h, value, parent)
-	if not isComponent(parent, 'tabpanel') then
-		return
-	end
-
-	local self = setmetatable(Component.new('tabpanel:tab', x, parent.topH + y, w, h - parent.topH), _Tab)
+	local self = inherit(Component.new('tabpanel:tab', x, parent.topH + y, w, h - parent.topH), _Tab)
 	self.value = value
 
 	self.button = Button(0, 0, parent.w, parent.topH, value)
