@@ -52,6 +52,10 @@ local function parseItemValues(self, values)
 	return parsed
 end
 
+local function getMaxItems(self)
+	return math.floor((self.h-self.titleh)/(self.itemh+self.itemSpacing))
+end
+
 function Gridlist:addColumn(title, width)
 	check('s', {title})
 
@@ -118,6 +122,9 @@ function Gridlist:addItem(values, onClick)
 	}
 
 	table.insert(self.items, item)
+
+	self.maxItems = getMaxItems(self)
+
 	updateRT(self)
 	return item
 end
@@ -170,6 +177,12 @@ function Gridlist:setItemHeight(val)
 	updateRT(self)
 end
 
+function Gridlist:setScrollPosition(pos)
+	check('n', {pos})
+	self.sp = math.max(1, math.min(#self.items - self.maxItems + 1, pos))
+	updateRT(self)
+end
+
 function Gridlist:sort(colIndex, reverse)
 	check('n', {colIndex})
 	local col = self.columns[colIndex]
@@ -189,7 +202,7 @@ function Gridlist:draw()
 	if (not self.visible) then return end
 
 	self.mouseOver = mouseX and isMouseOverPos(self.x, self.y, self.w, self.h)
-	self.maxItems = math.floor((self.h-self.titleh)/(self.itemh+self.itemSpacing))
+	self.maxItems = getMaxItems(self)
 
 	dxDrawRectangle(self.x, self.y, self.w, self.h, tocolor(0,0,0,150))
 
