@@ -4,10 +4,9 @@ local Seeker = {}
 
 function Slider.new(x, y, w, h)
 	local self = inherit(Component.new('Slider', x, y, w, h), Slider)
-	self.pos = 0
 	self.seekerWidth = 8
 	self.seeker = Seeker.new(0, 0, self.seekerWidth, h):setParent(self)
-	self.trackHeight = 10
+	self.trackHeight = 8
 	return self
 end
 
@@ -50,15 +49,14 @@ setmetatable(Slider, {__call = function(_, ...) return Slider.new(...) end})
 function Seeker.new(x, y, w, h)
 	local self = inherit(Component.new('Seeker', x, y, w, h), Seeker)
 	self:setDraggable(true)
-	self.pos = 0
+	self.pos = -1
 	return self
 end
 
 function Seeker:draw()
-	local x, y, w, h = self.x, self.y, self.w, self.h
 	local parent = self.parent
-
 	if parent then
+		local x, y, w, h = self.x, self.y, self.w, self.h
 		local pos = map(x, parent.x, parent.x + parent.w - w, 0, 100)
 		if pos ~= self.pos then
 			self.pos = pos
@@ -66,5 +64,9 @@ function Seeker:draw()
 		end
 
 		dxDrawRectangle(x, y, w, h, tocolor(55,55,255,255), false, true)
+
+		if self.dragArea.mouseDown or self.dragArea.mouseOver then
+			dxDrawRectangle(x, y, w, h, tocolor(55,110,255,255), false, true)
+		end
 	end
 end
