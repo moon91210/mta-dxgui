@@ -41,6 +41,13 @@ function table.copy(t)
 	return new
 end
 
+function focus(index)
+	local comp = components[index]
+	if comp then
+		comp:focus()
+	end
+end
+
 function isComponent(comp, typ)
 	if type(comp) == 'table' and comp.type then
 		if typ then
