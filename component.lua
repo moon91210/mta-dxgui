@@ -192,7 +192,7 @@ function Component:getValue()
 end
 
 function Component:setValue(v)
-	self.value = v
+	self.value = tostring(v)
 	return self
 end
 
