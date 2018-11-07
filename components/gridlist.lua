@@ -164,6 +164,12 @@ function Gridlist:clear()
 	updateRT(self)
 end
 
+function Gridlist:setItemHeight(val)
+	check('n', {val})
+	self.itemh = math.max(1, val)
+	updateRT(self)
+end
+
 function Gridlist:sort(colIndex, reverse)
 	check('n', {colIndex})
 	local col = self.columns[colIndex]
