@@ -27,6 +27,27 @@ btn2:setParent(win)
 btn2:on('click', function() btn2.value = 'clicked' end)
 ```
 
+# List of available components
+| Components |
+| ------- |
+| Window |
+| Button |
+| Label |
+| Input |
+| Image |
+| Checkbox |
+| TabPanel |
+| Gridlist |
+| MediaPlayer |
+| Alert |
+| ColorPicker |
+| ProgressBar |
+| Slider |
+| DragArea |
+| Lots more to come... |
+
+> Please note that some of these components aren't complete yet and missing features.
+
 # License
 
 Copyright 2018 Tails
