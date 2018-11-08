@@ -44,6 +44,7 @@ btn2:on('click', function() btn2.value = 'clicked' end)
 | ProgressBar |
 | Slider |
 | DragArea |
+| Browser |
 | Lots more to come... |
 
 > Please note that some of these components aren't complete yet and missing features.
