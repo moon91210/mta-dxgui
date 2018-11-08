@@ -82,7 +82,6 @@ function Image(x, y, w, h, path, postGUI, alpha)
 	end
 
 	function self:getNativeSize(update)
-		check('b', {update})
 		if (not pix) then return false end
 
 		if (update) then
@@ -127,6 +126,7 @@ function Image(x, y, w, h, path, postGUI, alpha)
 	function self:getFitSize() return fitSize end
 	function self:getPixels() return pix end
 	function self:getSrc() return src end
+	function self:getTexture() return tex end
 
 	self:load(path)
 
