@@ -25,6 +25,7 @@
     <script src="components/browser.lua" type="client" cache="false"/>
     <script src="components/mediaplayer.lua" type="client" cache="false"/>
     <script src="components/slider.lua" type="client" cache="false"/>
+    <script src="components/colorpicker.lua" type="client" cache="false"/>
 
     <!-- extra -->
     <script src="components/alert.lua" type="client" cache="false"/>
@@ -39,4 +40,5 @@
     <file src="img/broken.png"/>
     <file src="img/sign-info-icon.png"/>
     <file src="img/fullscreen.png"/>
+    <file src="img/colorpicker.png"/>
 </meta>
