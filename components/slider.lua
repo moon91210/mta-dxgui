@@ -1,5 +1,3 @@
--- need to look at seeker size (sucks)
-
 Slider = {}
 local Seeker = {}
 
