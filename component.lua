@@ -90,9 +90,7 @@ function Component:destroy()
 end
 
 function Component:setParent(parent)
-	if not isComponent(parent) then
-		error("the parent doesn't exist or was destroyed", 2)
-	end
+	assert(isComponent(parent), "the parent doesn't exist or was destroyed")
 
 	if self.parent then
 		self:removeParent()
