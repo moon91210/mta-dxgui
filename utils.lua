@@ -1,6 +1,7 @@
 -- Global Utils
 local sw, sh = guiGetScreenSize()
 mouseX, mouseY = false, false
+screenW, screenH = guiGetScreenSize()
 
 function globalRender()
 	-- maybe run this only when a gui is focused
@@ -24,14 +25,14 @@ end
 function table.removeByValue(t, v)
 	for i=#t, 1, -1 do
 		if (t[i] == v) then
-			table.remove(t, i)
+			return table.remove(t, i)
 		end
 	end
 	return false
 end
 
 function table.copy(t)
-	local new = Array.new()
+	local new = {}
 	for k,v in pairs(t) do
 		if (type(v) == 'table') then
 			v = table.copy(v)
