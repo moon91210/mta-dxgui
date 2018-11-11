@@ -43,6 +43,7 @@ function Component:update()
 	
 	if (self.draw) then
 		self:draw()
+		self:emit('update')
 	end
 	
 	for i=#self.children, 1, -1 do
