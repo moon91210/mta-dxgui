@@ -24,4 +24,8 @@ function ProgressBar:setProgress(value)
 	return self
 end
 
+function ProgressBar:getProgress()
+	return self.progress
+end
+
 setmetatable(ProgressBar, {__call = function(_, ...) return ProgressBar.new(...) end})
