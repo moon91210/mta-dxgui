@@ -27,6 +27,8 @@ btn2:setParent(win)
 btn2:on('click', function() btn2.value = 'clicked' end)
 ```
 
+Check ``demo.lua`` for more examples.
+
 # List of available components
 | Components |
 | ------- |
