@@ -25,14 +25,15 @@
     <script src="components/browser.lua" type="client" cache="false"/>
     <script src="components/mediaplayer.lua" type="client" cache="false"/>
     <script src="components/slider.lua" type="client" cache="false"/>
+
+    <!-- modules -->
+    <script src="components/alert.lua" type="client" cache="false"/>
     <script src="components/colorpicker.lua" type="client" cache="false"/>
 
-    <!-- extra -->
-    <script src="components/alert.lua" type="client" cache="false"/>
-
-    <!-- tests -->
-    <script src="demo/demo.lua" type="client"/>
-    <script src="demo/demo_s.lua" type="server"/>
+    <!-- tests/examples -->
+    <!-- <script src="demo/demo.lua" type="client"/> -->
+    <!-- <script src="demo/demo_s.lua" type="server"/> -->
+    <script src="demo.lua" type="client"/>
 
     <!-- files -->
     <file src="img/corner.png"/>
@@ -40,6 +41,6 @@
     <file src="img/broken.png"/>
     <file src="img/sign-info-icon.png"/>
     <file src="img/fullscreen.png"/>
-    <file src="img/colorpicker.png"/>
+    <file src="img/colorpicker2.jpg"/>
     <file src="img/seeker.png"/>
 </meta>
