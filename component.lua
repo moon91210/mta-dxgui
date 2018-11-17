@@ -100,6 +100,11 @@ function Component:setParent(parent)
 	table.removeByValue(components, self)
 	table.insert(parent.children, self)
 	self.parent = parent
+	
+	if self.type == "dragarea" then
+		self.parent.dragArea = self
+	end	
+	
 	return self
 end
 
