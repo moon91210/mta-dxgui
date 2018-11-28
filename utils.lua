@@ -34,6 +34,22 @@ function inherit(self, ...)
 	return self
 end
 
+local classes = {}
+
+function Class(name)
+	local t = {}
+	classes[name] = t
+	return t
+end
+
+function getClasses()
+	return classes
+end
+
+function capitalize(str)
+	return str:sub(1,1):upper()..str:sub(2)
+end
+
 function table.removeByValue(t, v)
 	for i=#t, 1, -1 do
 		if (t[i] == v) then
