@@ -1,22 +1,34 @@
--- Global Utils
-local sw, sh = guiGetScreenSize()
-mouseX, mouseY = false, false
-screenW, screenH = guiGetScreenSize()
+addEventHandler('onClientResourceStart', resourceRoot, function()
+	-- Globals
+	screenWidth, screenHeight = guiGetScreenSize()
+	mouseX = false
+	mouseY = false
+	mouseDown = false
 
-function globalRender()
-	-- maybe run this only when a gui is focused
-	mouseX, mouseY = getMouse()
-	mouseDown = mouseX and getKeyState("mouse1")
-end
-
-addEventHandler("onClientResourceStart", resourceRoot, function()
-	addEventHandler("onClientRender", root, globalRender)
+	addEventHandler("onClientRender", root, function()
+		-- @TODO Maybe run this only when a gui is focused for performance reasons
+		local mx, my = getCursorPosition()
+		mouseX = mx and mx*screenWidth
+		mouseY = my and my*screenHeight
+	
+		mouseDown = mouseX and (getKeyState('mouse1') or getKeyState('mouse2') or getKeyState('mouse3'))
+	end)
 end)
 
-function inherit(self, class)
-	for k, v in pairs(class) do
-		if k ~= 'new' and type(v) == 'function' then
-			self[k] = v
+function getMouseDown()
+	return mouseDown
+end
+
+function getMouseXY()
+	return mouseX, mouseY
+end
+
+function inherit(self, ...)
+	for i=1, #arg do
+		for k, v in pairs(arg[i]) do
+			if k ~= 'new' and type(v) == 'function' then
+				self[k] = v
+			end
 		end
 	end
 	return self
@@ -67,11 +79,6 @@ function isMouseOverPos(x, y, w, h)
 	return mouseX and w and h and mouseX >= x and mouseX <= x + w and mouseY >= y and mouseY <= y + h
 end
 
-function getMouse()
-	local mx, my = getCursorPosition()
-	return mx and mx*sw, my and my*sh
-end
-
 function constrain(num, low, high)
 	return (num >= low and num <= high and num) or (num < low and low) or (num > high and high)
 end
@@ -98,7 +105,7 @@ function check(pattern, arg, level)
 		if t ~= types[c] then
 			local msg = "bad argument #%s in '%s' (%s expected, got %s)"
 			level = level or 3
-			local fname =  debug.getinfo(2, "n").name or '?'
+			local fname = debug.getinfo(2, "n").name or '?'
 			error(msg:format(i, fname, types[c], tostring(t)), level)
 		end
 	end
