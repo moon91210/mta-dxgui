@@ -20,11 +20,11 @@ win:align('center')
 -- Add a couple of buttons
 local btn1 = Button(50, 50, 150, 60, 'click me')
 btn1:setParent(win)
-btn1:on('click', function() btn1.value = 'clicked' end)
+btn1:on('mouseup', function() btn1.value = 'clicked' end)
 
 local btn2 = Button(50, 120, 150, 60, 'click me too')
 btn2:setParent(win)
-btn2:on('click', function() btn2.value = 'clicked' end)
+btn2:on('mouseup', function() btn2.value = 'clicked' end)
 ```
 
 Check ``demo.lua`` for more examples.
