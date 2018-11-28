@@ -65,6 +65,7 @@ function dxClickHandler(self, btn, state, mx, my)
 			self:setOnTop()
 
 			self:emit('mousedown', btn)
+			self:emit('click', btn, state)
 
 			if not self.parent then
 				return true
@@ -73,6 +74,7 @@ function dxClickHandler(self, btn, state, mx, my)
 	else
 		if mouseOver and self.focused and self.mouseDown then
 			self:emit('mouseup', btn)
+			self:emit('click', btn, state)
 			self.mouseDown = false
 			return false
 		end
@@ -81,10 +83,6 @@ function dxClickHandler(self, btn, state, mx, my)
 
 	if self.onClick and self.focused then
 		self:onClick(btn, state)
-	end
-	
-	if mouseOver and self.focused then
-		self:emit('click', btn, state)
 	end
 
 	return false
