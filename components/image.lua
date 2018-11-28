@@ -1,134 +1,138 @@
-function Image(x, y, w, h, path, postGUI, alpha)
-	local self = Component.new('image', x, y, w, h)
-	local src
-	local tex
-	local pix
-	local nativeSize = {}
-	local ratio
-	local fitSize = {}
-	local fitMode = 'stretch'
-	local ow = self.w
-	local oh = self.h
-	local postGUI = postGUI or false
+Image = Class('Image')
 
-	self.alpha = alpha or 255 -- this needs to be a component variable (set/getAlpha)
 
-	function self:load(path, isPixels)
-		if (src == path or not path) then
-			return false
-		end
-		
-		if (not isPixels and path:find('://')) then -- hacky way of checking for urls
-			self:loadRemote(path)
-			src = path
-			return true
-		end
-
-		if (isPixels) then
-			self:loadPixels(path)
-			return true
-		end
-		
-		self:unload()
-		src = path
-
-		if (not fileExists(path)) then
-			return false
-		end
-
-		local f = fileOpen(path, true)
-	 	pix = f:read(f.size)
-
-		tex = DxTexture(pix)
-		self:getNativeSize(true)
-
-		f:close()		
-		return true
-	end
-
-	function self:loadRemote(url, callback)
-		check('s', {url})
-		self:unload()
-		requestBrowserDomains({url}, true, function()
-			if (isBrowserDomainBlocked(url, true)) then
-				self:loadRemote(url)
-				return
-			end
-			fetchRemote(url, function(data, err)
-				assert(err == 0, "Error fetching image. Err: "..err..". URL: "..url, 2)
-				self:loadPixels(data)
-				if type(callback) == 'function' then
-					callback(data)
-				end
-			end)
-		end)
-	end
-
-	function self:unload()
-		src = nil
-		tex = nil
-		pix = nil
-		nativeSize = {}
-		ratio = nil
-		fitSize = {}
-		collectgarbage()
-	end
-
-	function self:loadPixels(pixels)
-		check('s', {pixels})
-		tex = DxTexture(pixels)
-		pix = pixels
-		self:getNativeSize(true)
-	end
-
-	function self:getNativeSize(update)
-		if (not pix) then return false end
-
-		if (update) then
-			local w, h = dxGetPixelsSize(pix)
-			nativeSize = {w=w,h=h}
-		end
-
-		ratio = math.min(self.h/nativeSize.h, self.w/nativeSize.w)
-		fitSize.w = math.ceil(nativeSize.w*ratio)
-		fitSize.h = math.ceil(nativeSize.h*ratio)
-
-		return nativeSize, fitSize, ratio
-	end
-
-	function self:setFitMode(mode)
-		check('s', {mode})
-		fitMode = mode
-		return self
-	end
-
-	function self:draw()
-		if (fitMode == "nostretch" and self.w ~= ow and self.h ~= oh) then
-			self:getNativeSize(false)
-			ow = self.w
-			oh = self.h
-		end
-
-		if (tex) then
-			local size = fitMode == "nostretch" and fitSize or {w=self.w,h=self.h}
-			dxDrawImage(self.x, self.y, size.w, size.h, tex, 0, 0, 0, tocolor(255,255,255,self.alpha), postGUI)
-		else
-			local color = tocolor(160,160,160,150)
-			dxDrawLine(self.x, self.y, self.x+self.w, self.y, color) -- top
-			dxDrawLine(self.x, self.y+self.h, self.x+self.w, self.y+self.h, color) -- bottom
-			dxDrawLine(self.x, self.y, self.x, self.y+self.h, color) -- left
-			dxDrawLine(self.x+self.w, self.y, self.x+self.w, self.y+self.h, color) -- right
-			dxDrawImage(self.x, self.y, 35, 35, "img/broken.png", 0, 0, 0, tocolor(255,255,255,self.alpha), postGUI)
-		end
-	end
-
-	function self:getFitMode() return fitMode end
-	function self:getFitSize() return fitSize end
-	function self:getPixels() return pix end
-	function self:getSrc() return src end
-	function self:getTexture() return tex end
+function Image.new(x, y, w, h, path, postGUI, alpha)
+	local self = inherit(Component.new('image', x, y, w, h), Image)
+	self.path = nil
+	self.tex = nil
+	self.pix = nil
+	self.nativeSize = {}
+	self.ratio = nil
+	self.fitSize = {}
+	self.fitMode = 'stretch'
+	self.ow = self.w
+	self.oh = self.h
+	self.postGUI = postGUI or false
+	self.alpha = alpha or 255 -- @TODO this needs to be a component variable (set/getAlpha)
 
 	self:load(path)
 
 	return self
 end
+
+function Image:load(path, isPixels)
+	if (self.path == path or not path) then
+		return false
+	end
+	
+	if (not isPixels and path:find('://')) then -- hacky way of checking for urls
+		self:loadRemote(path)
+		self.path = path
+		return true
+	end
+
+	if (isPixels) then
+		self:loadPixels(path)
+		return true
+	end
+	
+	self:unload()
+	self.path = path
+
+	if (not fileExists(path)) then
+		return false
+	end
+
+	local f = fileOpen(path, true)
+	self.pix = f:read(f.size)
+
+	self.tex = DxTexture(self.pix)
+	self:getNativeSize(true)
+
+	f:close()		
+	return true
+end
+
+function Image:loadRemote(url, callback)
+	check('s', {url})
+	self:unload()
+	requestBrowserDomains({url}, true, function()
+		if (isBrowserDomainBlocked(url, true)) then
+			self:loadRemote(url)
+			return
+		end
+		fetchRemote(url, function(data, err)
+			assert(err == 0, "Error fetching image. Err: "..err..". URL: "..url, 2)
+			self:loadPixels(data)
+			if type(callback) == 'function' then
+				callback(data)
+			end
+		end)
+	end)
+end
+
+function Image:unload()
+	self.src = nil
+	self.tex = nil
+	self.pix = nil
+	self.nativeSize = {}
+	self.ratio = nil
+	self.fitSize = {}
+	collectgarbage()
+end
+
+function Image:loadPixels(pixels)
+	check('s', {pixels})
+	self.tex = DxTexture(pixels)
+	self.pix = pixels
+	self:getNativeSize(true)
+end
+
+function Image:getNativeSize(update)
+	if (not self.pix) then return false end
+
+	if (update) then
+		local w, h = dxGetPixelsSize(self.pix)
+		self.nativeSize = {w=w,h=h}
+	end
+
+	self.ratio = math.min(self.h/self.nativeSize.h, self.w/self.nativeSize.w)
+	self.fitSize.w = math.ceil(self.nativeSize.w*self.ratio)
+	self.fitSize.h = math.ceil(self.nativeSize.h*self.ratio)
+
+	return self.nativeSize, self.fitSize, self.ratio
+end
+
+function Image:setFitMode(mode)
+	check('s', {mode})
+	self.fitMode = mode
+	return self
+end
+
+function Image:draw()
+	if (self.fitMode == "nostretch" and self.w ~= self.ow and self.h ~= self.oh) then
+		self:getNativeSize(false)
+		self.ow = self.w
+		self.oh = self.h
+	end
+
+	if (self.tex) then
+		local size = self.fitMode == "nostretch" and self.fitSize or {w=self.w,h=self.h}
+		dxDrawImage(self.x, self.y, size.w, size.h, self.tex, 0, 0, 0, tocolor(255,255,255,self.alpha), self.postGUI)
+	else
+		local color = tocolor(160,160,160,150)
+		dxDrawLine(self.x, self.y, self.x+self.w, self.y, color) -- top
+		dxDrawLine(self.x, self.y+self.h, self.x+self.w, self.y+self.h, color) -- bottom
+		dxDrawLine(self.x, self.y, self.x, self.y+self.h, color) -- left
+		dxDrawLine(self.x+self.w, self.y, self.x+self.w, self.y+self.h, color) -- right
+		dxDrawImage(self.x, self.y, 35, 35, "img/broken.png", 0, 0, 0, tocolor(255,255,255,self.alpha), self.postGUI)
+	end
+end
+
+function Image:getFitMode() return self.fitMode end
+function Image:getFitSize() return self.fitSize end
+function Image:getPixels() return self.pix end
+function Image:getSrc() return self.src end
+function Image:getTexture() return self.tex end
+
+setmetatable(Image, {__call = function(_, ...) return Image.new(...) end})
