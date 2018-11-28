@@ -6,7 +6,7 @@ function Checkbox.new(x, y, w, h, value)
 	self.value = value
 	self.selected = false
 
-	self:on('click', function(btn)
+	self:on('mouseup', function(btn)
 		self:toggle()
 	end)
 
