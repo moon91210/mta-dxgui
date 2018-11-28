@@ -26,67 +26,65 @@ addEventHandler('onClientKey', root, function(key, down)
 end)
 
 function dxKeyHandler(self, key, down)
-	if (not self.visible) then return end
+	if not self.visible and not self.focused then return end
 
 	for i=1, #self.children do
-		if (dxKeyHandler(self.children[i], key, down)) then
+		if dxKeyHandler(self.children[i], key, down) then
 			return true
 		end
 	end
 
-	if (self.onKey and self.focused) then
+	if self.onKey then
 		self:onKey(key, down)
 		return true
 	end
 end
 
 function dxClickHandler(self, btn, state, mx, my)
-	if (not self or not self.visible) then return end
+	if not self or not self.visible then return end
 
 	local children = self.children
 
 	for i=1, #children do
-		if (dxClickHandler(children[i], btn, state, mx, my)) then
+		if dxClickHandler(children[i], btn, state, mx, my) then
 			return true
 		end
 	end
 
 	local w, h = self.w, self.h
 	-- exception for images with fitmode set to 'nostretch'
-	if (self.type == 'image' and self:getFitMode() == 'nostretch' and self:getPixels()) then
+	if self.type == 'image' and self:getFitMode() == 'nostretch' and self:getPixels() then
 		local fs = self:getFitSize()
 		w, h = fs.w, fs.h
 	end
 
 	local mouseOver = isMouseOver(self, w, h)
-	
-	if (self.onClick and self.focused) then
-		self:onClick(btn, state)
+	if state == 'down' then
+		if mouseOver then
+			self.mouseDown = true
+			self:setOnTop()
+
+			self:emit('mousedown', btn)
+
+			if not self.parent then
+				return true
+			end
+		end
+	else
+		if mouseOver and self.focused and self.mouseDown then
+			self:emit('mouseup', btn)
+			self.mouseDown = false
+			return false
+		end
+		self.mouseDown = false
 	end
 
-	if (btn == 'left' or btn == 'middle') then
-		if (state == 'down')  then
-			if (mouseOver) then
-				self.mouseDown = true
-				self:setOnTop()
-
-				self:emit('mousedown', btn)
-
-				if (not self.parent) then
-					return true
-				end
-			end
-		else
-			if (mouseOver and self.mouseDown) then
-				if (self.focused) then
-					self:emit('click', btn)
-					self:emit('mouseup', btn)
-					self.mouseDown = false
-					return false
-				end
-			end
-			self.mouseDown = false
-		end
+	if self.onClick and self.focused then
+		self:onClick(btn, state)
+	end
+	
+	if mouseOver and self.focused then
+		self:emit('click', btn, state)
 	end
 
 	return false
