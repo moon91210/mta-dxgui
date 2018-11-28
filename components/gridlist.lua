@@ -13,7 +13,7 @@ function Gridlist.new(x, y, w, h)
 	self.ep = nil
 	self.selectedItem = 0
 	self.rt = DxRenderTarget(self.w, self.h, true)
-	self.rt_updated = false
+	self.rtUpdated = false
 	self.scrollbarWidth = 15
 	self.paddingLeft = 6
 	self.scrollbarVisible = true
@@ -206,9 +206,9 @@ function Gridlist:draw()
 
 	dxDrawRectangle(self.x, self.y, self.w, self.h, tocolor(0,0,0,150))
 
-	if (not self.rt_updated or self.mouseOver and self.focused) then
+	if (not self.rtUpdated or self.mouseOver and self.focused) then
 		updateRT(self) -- draw items onto the render target
-		self.rt_updated = true
+		self.rtUpdated = true
 	end
 	
 	dxDrawImage(self.x, self.y, self.w, self.h, self.rt)
@@ -308,7 +308,7 @@ end
 function Gridlist:onKey(key, down)
 	if (not self.mouseOver) then return end
 	
-	self.updated = false
+	self.rtUpdated = false
 
 	if (key == "mouse_wheel_down") then
 		if (self.sp <= #self.items - self.maxItems) then
