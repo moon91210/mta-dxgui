@@ -53,7 +53,7 @@ function Browser:setFullscreen(full)
 		if not isComponent(self.pane) then
 			self.pane = Pane(0,0,sw,sh)
 			Image(sw-45, sh-45,45,45,'./img/fullscreen.png',true)
-				:on('click', function()
+				:on('mouseup', function()
 					self:setFullscreen(false)
 				end)
 				:setParent(self.pane)

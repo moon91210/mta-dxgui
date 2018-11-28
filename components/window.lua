@@ -12,7 +12,7 @@ function Window.new(x, y, w, h, value)
 
 	self.closeBtn = Button.new(self.w - self.titleh, 3, self.titleh-3, self.titleh-5, "×")
 		:setParent(dragArea)
-		:on("click", function()
+		:on('mouseup', function()
 			self.visible = false
 			self:emit('close')
 			focus(2)

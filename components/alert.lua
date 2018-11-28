@@ -15,7 +15,7 @@ function Alert(message, callback)
 	self.button = Button(0, 170, 120, 40, 'OK')
 		:setParent(self)
 		:align('centerX')
-		:once('click', function()
+		:once('mouseup', function()
 			if type(callback) == 'function' then
 				callback()
 			end

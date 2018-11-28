@@ -10,7 +10,7 @@ function MediaPlayer.new(x, y, w, h)
 
 	Image(self.w - 45, self.h - 45, 45, 45, './img/fullscreen.png')
 		:setParent(self)
-		:on('click', function()
+		:on('mouseup', function()
 			if isComponent(self.browser) then
 				self:setFullscreen(not self.full)
 			end

@@ -74,7 +74,7 @@ function _Tab.new(x, y, w, h, value, parent)
 
 	self.button = Button(0, 0, parent.w, parent.topH, value)
 		:setParent(parent)
-		:on('click', function()
+		:on('mouseup', function()
 			parent:setActiveTab(self)
 		end)
 
