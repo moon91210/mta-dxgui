@@ -1,8 +1,8 @@
-Browser = {}
+Browser = Class('Browser')
 
 
 function Browser.new(x, y, w, h, isLocal, isTransparent)
-	local self = inherit(Component.new('browser', x, y, w, h), Browser)
+	local self = inherit(Component.new('Browser', x, y, w, h), Browser)
 	self.browser = createBrowser(w, h, isLocal or false, isTransparent or false)
 	self.volume = 1
 	self.full = false

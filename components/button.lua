@@ -1,4 +1,4 @@
-Button = {}
+Button = Class('Button')
 
 
 function Button.new(x, y, w, h, value)

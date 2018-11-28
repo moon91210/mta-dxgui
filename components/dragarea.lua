@@ -1,4 +1,4 @@
-DragArea = {}
+DragArea = Class('DragArea')
 
 
 function DragArea.new(x, y, w, h)

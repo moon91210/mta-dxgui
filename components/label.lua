@@ -1,4 +1,4 @@
-Label = {}
+Label = Class('Label')
 
 
 function Label.new(x, y, w, h, value, scale, color, shadowed, font, alignleft, aligntop, clip, wordBreak)

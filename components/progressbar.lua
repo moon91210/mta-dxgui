@@ -1,4 +1,4 @@
-ProgressBar = {}
+ProgressBar = Class('ProgressBar')
 
 
 function ProgressBar.new(x, y, w, h)

@@ -1,4 +1,4 @@
-MediaPlayer = {}
+MediaPlayer = Class('MediaPlayer')
 
 
 function MediaPlayer.new(x, y, w, h)

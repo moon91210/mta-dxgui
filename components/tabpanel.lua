@@ -1,4 +1,4 @@
-TabPanel = {}
+TabPanel = Class('TabPanel')
 local _Tab = {}
 
 

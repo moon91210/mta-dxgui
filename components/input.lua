@@ -1,4 +1,4 @@
-Input = {}
+Input = Class('Input')
 
 
 function Input.new(x, y, w, h, value)

@@ -1,4 +1,4 @@
-Gridlist = {}
+Gridlist = Class('Gridlist')
 
 
 function Gridlist.new(x, y, w, h)

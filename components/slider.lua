@@ -1,4 +1,4 @@
-Slider = {}
+Slider = Class('Slider')
 local Seeker = {}
 
 

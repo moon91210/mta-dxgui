@@ -1,4 +1,4 @@
-Checkbox = {}
+Checkbox = Class('Checkbox')
 
 
 function Checkbox.new(x, y, w, h, value)

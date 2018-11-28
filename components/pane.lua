@@ -1,4 +1,4 @@
-Pane = {}
+Pane = Class('Pane')
 
 
 function Pane.new(x, y, w, h)

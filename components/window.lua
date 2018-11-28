@@ -1,4 +1,4 @@
-Window = {}
+Window = Class('Window')
 
 
 function Window.new(x, y, w, h, value)
