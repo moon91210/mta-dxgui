@@ -1,6 +1,10 @@
+-- @TODO color sliders acting weird when updated through self:on('change')
+
 local Pointer = {}
 
 function ColorPicker()
+	local r, g, b, a = 255, 255, 255, 255
+
 	local self = Window(0, 0, 550, 350, 'Color Picker')
 		:align('center')
 
@@ -17,6 +21,44 @@ function ColorPicker()
 	self.img = Image(140, 10, 400, 300, './img/colorpicker.png')
 		:setParent(self)
 
+	local function updatePointer()
+		if r and g and b then
+			self:emit('change', r, g, b, a)
+		end
+	end
+
+	local slider1 = Slider(10, 95, 120, 30)
+		:setParent(self)
+		:setMinMax(0,255)
+		:on('change', function(pos)
+			r = math.floor(pos)
+			updatePointer()
+		end)
+	
+	local slider2 = Slider(10, 125, 120, 30)
+		:setParent(self)
+		:setMinMax(0,255)
+		:on('change', function(pos)
+			g = math.floor(pos)
+			updatePointer()
+		end)
+
+	local slider3 = Slider(10, 155, 120, 30)
+		:setParent(self)
+		:setMinMax(0,255)
+		:on('change', function(pos)
+			b = math.floor(pos)
+			updatePointer()
+		end)
+
+	self:on('change', function(r,g,b,a)
+		self.lbl.color = tocolor(r, g, b, a)
+		self.input:setValue(string.format('%s, %s, %s, %s', r, g, b, a))
+		slider1:setSeekerPosition(math.floor(r))
+		slider2:setSeekerPosition(math.floor(g))
+		slider3:setSeekerPosition(math.floor(b))
+	end)
+
 	local pointer = Pointer.new():setParent(self.img)
 
 	local f = fileOpen(self.img:getSrc())
@@ -25,7 +67,7 @@ function ColorPicker()
 	local size = self.img:getNativeSize()
 
 	self:on('update', function()
-		if not self.img.mouseDown then return end
+		if not mouseDown or not mouseX or not self.img.mouseDown then return end
 
 		local x = map(mouseX + self.x, self.x + self.img.x, self.x + self.img.x + self.img.w, 0, self.img.w)
 		local y = map(mouseY + self.y, self.y + self.img.y, self.y + self.img.y + self.img.h, 0, self.img.h)
@@ -37,12 +79,8 @@ function ColorPicker()
 		x = map(x, 0, self.img.w, 0, size.w-1)
 		y = map(y, 0, self.img.h, 0, size.h-1)
 
-		local r, g, b, a = dxGetPixelColor(pixels, x, y)
-		if r then
-			self.lbl.color = tocolor(r, g, b, a)
-			self.input:setValue(string.format('%s, %s, %s, %s', r, g, b, a))
-			self:emit('change', r, g, b, a)
-		end
+		r, g, b, a = dxGetPixelColor(pixels, x, y)
+		updatePointer()
 	end)
 
 	return self
