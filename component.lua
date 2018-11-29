@@ -159,8 +159,8 @@ function Component:getPosition()
 end
 
 function Component:setPosition(x, y)
-	x = x or self.x
-	y = y or self.y
+	x = x or self.ox
+	y = y or self.oy
 	self.ox, self.oy = x, y
 	self.x, self.y = x, y
 	return self
