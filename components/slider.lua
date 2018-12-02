@@ -20,8 +20,7 @@ end
 function Slider:setSeekerPosition(pos)
 	check('n', {pos})
 	local min, max = self.min, self.max
-	assert(pos >= min and pos <= max, string.format('position must be a value between %s-%s', min, max))
-	self.seeker:setPosition(map(pos, min, max, 0, self.w - self.seeker.w))
+	self.seeker:setPosition(map(constrain(pos, min, max), min, max, 0, self.w - self.seeker.w), 0)
 	return self
 end
 
