@@ -8,7 +8,7 @@ function Gridlist.new(x, y, w, h)
 	self.items = {}
 	self.itemh = 45
 	self.itemSpacing = 2
-	self.maxItems = nil
+	self.maxItems = 0
 	self.sp = 1
 	self.ep = nil
 	self.selectedItem = 0
@@ -20,6 +20,15 @@ function Gridlist.new(x, y, w, h)
 	self.textSize = 1.3
 	self.titleSpacing = 27
 	self.autoSizeColumns = true
+	self.scrollbar = Scrollbar(self.w-self.scrollbarWidth, 0, self.scrollbarWidth, h):setParent(self)
+
+	self.scrollbar:on('change', function(pos)
+		if self.scrollbar.mouseDown then
+			self.sp = math.ceil(pos)
+			self.rtUpdated = false
+		end
+	end)
+
 	return self
 end
 
@@ -54,6 +63,10 @@ end
 
 local function getMaxItems(self)
 	return math.floor((self.h-self.titleh)/(self.itemh+self.itemSpacing))
+end
+
+local function calculateScrollbar(self)
+	self.scrollbar:setThumbHeight(self.h * (self.h / (#self.items * self.itemh)))
 end
 
 function Gridlist:addColumn(title, width)
@@ -124,6 +137,8 @@ function Gridlist:addItem(values, onClick)
 	table.insert(self.items, item)
 
 	self.maxItems = getMaxItems(self)
+	self.scrollbar:setMinMax(1, (#self.items-self.maxItems+1))
+	calculateScrollbar(self)
 
 	updateRT(self)
 	return item
@@ -132,7 +147,12 @@ end
 function Gridlist:removeItem(itemIndex)
 	check('n', {itemIndex})
 	table.remove(self.items, itemIndex)
-	updateRT(self)	
+
+	self.maxItems = getMaxItems(self)
+	self.scrollbar:setMinMax(1, (#self.items-self.maxItems))
+	calculateScrollbar(self)
+
+	updateRT(self)
 end
 
 function Gridlist:getSelectedItem()
@@ -180,6 +200,7 @@ end
 function Gridlist:setScrollPosition(pos)
 	check('n', {pos})
 	self.sp = math.max(1, math.min(#self.items - self.maxItems + 1, pos))
+	self.scrollbar:setScrollPosition(self.sp)
 	updateRT(self)
 end
 
@@ -212,27 +233,6 @@ function Gridlist:draw()
 	end
 	
 	dxDrawImage(self.x, self.y, self.w, self.h, self.rt)
-
-	self:drawScrollBar()
-end
-
-function Gridlist:drawScrollBar()
-	if not self.scrollbarVisible then return end
-	local itemCount = #self.items
-	if itemCount > self.maxItems then
-		local shaftw = self.scrollbarWidth
-		local shafth = self.h
-
-		local thumbw = self.scrollbarWidth
-		local thumbh = (shafth/(itemCount-self.maxItems+1))
-
-		local thumbPos = thumbh * (self.sp - 1)
-
-		-- shaft
-		dxDrawRectangle(self.x + self.w - shaftw, self.y, shaftw, shafth, tocolor(66,66,66,200))
-		-- thumb
-		dxDrawRectangle(self.x + self.w - thumbw, self.y + thumbPos, thumbw, thumbh, tocolor(55,55,255,255))
-	end
 end
 
 function Gridlist:drawItems()
@@ -313,14 +313,16 @@ function Gridlist:onKey(key, down)
 	if (key == "mouse_wheel_down") then
 		if (self.sp <= #self.items - self.maxItems) then
 			self.sp = self.sp + 1
+			self.scrollbar:setScrollPosition(self.sp)
 		end
 
 	elseif (key == "mouse_wheel_up") then
 		if (self.sp > 1) then
 			self.sp = self.sp - 1
+			self.scrollbar:setScrollPosition(self.sp)
 		end
 
-	elseif (key == 'mouse1' and not down) then
+	elseif (key == 'mouse1' and not down and not self.scrollbar.mouseDown) then
 		for i=self.sp, self.ep do
 			local item = self.items[i]
 			if (self.mouseDown and isMouseOverPos(item.clickArea.x, item.clickArea.y, item.clickArea.w, item.clickArea.h)) then
