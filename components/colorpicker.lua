@@ -61,13 +61,13 @@ function ColorPicker()
 
 	local pointer = Pointer.new():setParent(self.img)
 
-	local f = fileOpen(self.img:getSrc())
+	local f = fileOpen(self.img:getPath())
 	local pixels = dxConvertPixels(f:read(f.size), 'plain')
 	f:close()
 	local size = self.img:getNativeSize()
 
 	self:on('update', function()
-		if not mouseDown or not mouseX or not self.img.mouseDown then return end
+		if not (mouseDown and mouseX and self.img.mouseDown) then return end
 
 		local x = map(mouseX + self.x, self.x + self.img.x, self.x + self.img.x + self.img.w, 0, self.img.w)
 		local y = map(mouseY + self.y, self.y + self.img.y, self.y + self.img.y + self.img.h, 0, self.img.h)

@@ -72,7 +72,7 @@ function Image:loadRemote(url, callback)
 end
 
 function Image:unload()
-	self.src = nil
+	self.path = nil
 	self.tex = nil
 	self.pix = nil
 	self.nativeSize = {}
@@ -132,7 +132,7 @@ end
 function Image:getFitMode() return self.fitMode end
 function Image:getFitSize() return self.fitSize end
 function Image:getPixels() return self.pix end
-function Image:getSrc() return self.src end
+function Image:getPath() return self.path end
 function Image:getTexture() return self.tex end
 
 setmetatable(Image, {__call = function(_, ...) return Image.new(...) end})
