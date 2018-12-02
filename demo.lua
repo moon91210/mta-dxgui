@@ -10,11 +10,11 @@ local tab2 = tp:addTab('Second')
 
 local btn1 = Button(50, 50, 120, 45, 'click me')
 btn1:setParent(tab1)
-btn1:once('click', function() btn1:setValue('clicked') end)
+btn1:once('mouseup', function() btn1:setValue('clicked') end)
 
 local btn2 = Button(50, 110, 120, 45, 'click me')
 btn2:setParent(tab1)
-btn2:on('click', function()
+btn2:on('mouseup', function()
 	if btn2:getValue() == 'click me' then
 		btn2:setValue('click me again')
 	else
@@ -52,7 +52,7 @@ list:sort(1)
 
 local btn3 = Button(180, 25, 150, 45, 'Delete Selected')
 btn3:setParent(win2)
-btn3:on('click', function()
+btn3:on('mouseup', function()
 	local index = list:getSelectedItem()
 	if index then
 		Alert('Are you sure about that?', function()
@@ -87,7 +87,7 @@ slider:on('change', function(pos)
 end)
 
 local btn4 = Button(25,25,130,45,'Get Slider Pos')
-btn4:on('click', function() outputChatBox(slider:getSeekerPosition()) end)
+btn4:on('mouseup', function() outputChatBox(slider:getSeekerPosition()) end)
 btn4:setParent(win2)
 
 
