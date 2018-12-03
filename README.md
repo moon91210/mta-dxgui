@@ -1,12 +1,12 @@
 # DX-GUI (A framework for MTA)
 
-> Note: This framework is currently unstable and in development. Every piece of code is subject to change so some functions may be changed completely or may not work at all in the future. Please take this into consideration when using this framework in your projects.
-
 DX-GUI allows scripters to build beautiful GUI with just a few lines of code.
 
 My aim is to make this framework be faster and more flexible than DGS by splitting everything up in separate modules which will allow us to re-use code and also makes it easier to update the code and modify it.
 
 We try to make the functions easy to use and you're able to chain most of the component methods which increases usability a lot and it'll make your code shorter and easier to read.
+
+> Note: This framework is currently unstable and in development. Every piece of code is subject to change so some functions may be changed completely or may not work at all in the future. Please take this into consideration when using this framework in your projects.
 
 # Example
 
