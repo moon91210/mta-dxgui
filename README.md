@@ -6,11 +6,11 @@ My aim is to make this framework be faster and more flexible than DGS by splitti
 
 We try to make the functions easy to use and you're able to chain most of the component methods which increases usability a lot and it'll make your code shorter and easier to read.
 
-> Note: This framework is currently unstable and in development. Every piece of code is subject to change so some functions may be changed completely or may not work at all in the future. Please take this into consideration when using this framework in your projects.
+> Note: This framework is currently in development and thus unstable. Every piece of code is subject to change so some functions may be changed completely or may not work at all in the future. Please take this into consideration when using this framework.
 
 # Example
 
-Making gui with dx-gui is really easy:
+Making gui with DX-GUI is really easy:
 
 ```lua
 -- Create a window
@@ -27,7 +27,7 @@ btn2:setParent(win)
 btn2:on('mouseup', function() btn2.value = 'clicked' end)
 ```
 
-Check ``demo.lua`` for more examples.
+Check out ``demo.lua`` for more examples.
 
 # List of available components
 | Components |
@@ -44,6 +44,7 @@ Check ``demo.lua`` for more examples.
 | Alert |
 | ColorPicker |
 | ProgressBar |
+| Scrollbar |
 | Slider |
 | DragArea |
 | Browser |
