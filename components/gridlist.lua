@@ -66,7 +66,12 @@ local function getMaxItems(self)
 end
 
 local function calculateScrollbar(self)
-	self.scrollbar:setThumbHeight(self.h * (self.h / (#self.items * self.itemh)))
+	self.maxItems = getMaxItems(self)
+	self.scrollbar:setMinMax(1, (#self.items-self.maxItems+1))
+
+	local h = self.h * (self.h / ((#self.items + 1) * self.itemh))
+	self.scrollbar.enabled = h <= self.h
+	self.scrollbar:setThumbHeight(math.min(self.h, h))
 end
 
 function Gridlist:addColumn(title, width)
@@ -136,8 +141,6 @@ function Gridlist:addItem(values, onClick)
 
 	table.insert(self.items, item)
 
-	self.maxItems = getMaxItems(self)
-	self.scrollbar:setMinMax(1, (#self.items-self.maxItems+1))
 	calculateScrollbar(self)
 
 	updateRT(self)
@@ -148,9 +151,11 @@ function Gridlist:removeItem(itemIndex)
 	check('n', {itemIndex})
 	table.remove(self.items, itemIndex)
 
-	self.maxItems = getMaxItems(self)
-	self.scrollbar:setMinMax(1, (#self.items-self.maxItems))
 	calculateScrollbar(self)
+
+	if self.sp > (#self.items-self.maxItems-1) then
+		self:setScrollPosition(#self.items)
+	end
 
 	updateRT(self)
 end

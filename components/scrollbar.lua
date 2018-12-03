@@ -20,7 +20,7 @@ end
 function Scrollbar:setScrollPosition(pos)
 	check('n', {pos})
 	local min, max = self.min, self.max
-	self.thumb:setPosition(0, map(constrain(pos, min, max), min, max, 0, self.h - self.thumb.h))
+	self.thumb:setPosition(0, math.max(0,map(constrain(pos, min, max), min, max, 0, self.h - self.thumb.h)))
 	return self
 end
 
@@ -28,21 +28,21 @@ function Scrollbar:getScrollPosition()
 	return self.thumb.pos
 end
 
-function Scrollbar:setThumbHeight(height)
-	check('n', {height})
-	self.thumb.h = height
+function Scrollbar:setThumbHeight(h)
+	check('n', {h})
+	self.thumb:setHeight(h)
 	return self
 end
 
 function Scrollbar:scrollOneUp()
 	local min, max = self.min, self.max
-	self.thumb:setPosition(0, map(constrain(self.thumb.pos-1, min, max), min, max, 0, self.h - self.thumb.h))
+	self.thumb:setPosition(0,  math.max(0,map(constrain(self.thumb.pos-1, min, max), min, max, 0, self.h - self.thumb.h)))
 	return self
 end
 
 function Scrollbar:scrollOneDown()
 	local min, max = self.min, self.max
-	self.thumb:setPosition(0, map(constrain(self.thumb.pos+1, min, max), min, max, 0, self.h - self.thumb.h))
+	self.thumb:setPosition(0,  math.max(0,map(constrain(self.thumb.pos+1, min, max), min, max, 0, self.h - self.thumb.h)))
 	return self
 end
 
@@ -61,6 +61,11 @@ function Thumb.new(x, y, w, h)
 	self.pos = -1
 	self:setDraggable(true)
 	return self
+end
+
+function Thumb:setHeight(h)
+	self.dragArea.h = h
+	self.h = h
 end
 
 function Thumb:draw()
