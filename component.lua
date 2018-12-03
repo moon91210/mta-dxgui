@@ -18,6 +18,7 @@ function Component.new(typ, x, y, w, h)
 	self.children = {}
 	self.parent = nil
 	self.visible = true
+	self.enabled = true
 	self.focused = false
 	self.mouseOver = false
 	self.mouseDown = false
@@ -48,6 +49,10 @@ function Component:update()
 	
 	for i=#self.children, 1, -1 do
 		self.children[i]:update()
+	end
+
+	if (not self.enabled) then
+		dxDrawRectangle(self.x, self.y, self.w, self.h, tocolor(0,0,0,200))
 	end
 
 	self.mouseOver = (self.focused or not parent) and isMouseOverPos(self.x, self.y, self.w, self.h)
@@ -151,6 +156,15 @@ function Component:setDraggable(state)
 			self.dragArea:destroy()
 		end
 	end
+	return self
+end
+
+function Component:getEnabled()
+	return self.enabled
+end
+
+function Component:setEnabled(state)
+	self.enabled = state
 	return self
 end
 

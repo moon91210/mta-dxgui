@@ -26,7 +26,7 @@ addEventHandler('onClientKey', root, function(key, down)
 end)
 
 function dxKeyHandler(self, key, down)
-	if not self.visible and not self.focused then return end
+	if not self.visible and not self.focused and not self.enabled then return end
 
 	for i=1, #self.children do
 		if dxKeyHandler(self.children[i], key, down) then
@@ -41,7 +41,7 @@ function dxKeyHandler(self, key, down)
 end
 
 function dxClickHandler(self, btn, state, mx, my)
-	if not self or not self.visible then return end
+	if not self or not self.visible or not self.enabled then return end
 
 	local children = self.children
 
