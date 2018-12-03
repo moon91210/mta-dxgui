@@ -6,7 +6,7 @@ function Scrollbar.new(x, y, w, h)
 	local self = inherit(Component.new('Scrollbar', x, y, w, h), Scrollbar)
 	self.min = 0
 	self.max = 100
-	self.thumb = Thumb.new(0, 0, w, 40):setParent(self)
+	self.thumb = Thumb.new(0, 0, w, self.h):setParent(self)
 	return self
 end
 
@@ -30,7 +30,7 @@ end
 
 function Scrollbar:setThumbHeight(h)
 	check('n', {h})
-	self.thumb:setHeight(h)
+	self.thumb:setHeight(math.max(15, h))
 	return self
 end
 
