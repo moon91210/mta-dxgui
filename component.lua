@@ -171,7 +171,8 @@ function Component:getSize()
 end
 
 function Component:setSize(w, h)
-	self.w, self.h = w, h
+	self.w = w or self.w
+	self.h = h or self.h
 	return self
 end
 
