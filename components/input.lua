@@ -10,8 +10,8 @@ function Input.new(x, y, w, h, value)
 	self.active = false
 	self.font = "tahoma"
 	self.fontSize = 1.35
-	self.bsHeld = false
-	self.bsTick = nil
+	self.backspaceHeld = false
+	self.backspaceTick = nil
 	self.charEvent = function(char) self:onChar(char) end
 	return self
 end
@@ -30,8 +30,8 @@ function Input:draw()
 		dxDrawRectangle(x, y+6, 2, self.h - 15, tocolor(22, 22, 22, 255), true)
 	end
 
-	if (self.bsHeld and getTickCount() > self.bsTick + 25) then
-		self.bsTick = getTickCount()
+	if (self.backspaceHeld and getTickCount() > self.backspaceTick + 25) then
+		self.backspaceTick = getTickCount()
 		self.value = self.value:sub(1,-2)
 	end
 end
@@ -73,10 +73,10 @@ function Input:onKey(key, down)
 	elseif (key == 'backspace') then
 		if (self.active and down) then
 			self.value = self.value:sub(1,-2)
-			self.bsHeld = true
-			self.bsTick = getTickCount()+500
+			self.backspaceHeld = true
+			self.backspaceTick = getTickCount()+500
 		else
-			self.bsHeld = false
+			self.backspaceHeld = false
 		end
 	elseif (self.active and key == 'c' and not down) then
 		if (getKeyState("lctrl")) then
