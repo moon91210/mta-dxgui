@@ -48,11 +48,12 @@ local function parseItemValues(self, values)
 	local parsed = {}
 	for i=1, #values do
 		local val = {}
-		val.value = values[i]
+		val.value = tostring(values[i])
 		val.width = dxGetTextWidth(val.value, self.textSize)
 
 		if self.columns[i].checkThumbnails then
 			if not fileExists(tostring(val.value)) then
+				val.origValue = values[i]
 				val.value = 'img/broken.png'
 			end
 			val.width = self.itemh
@@ -74,6 +75,32 @@ function Gridlist:_calculateScrollbar()
 	local h = self.h * (self.h / ((#self.items + 1) * self.itemh))
 	self.scrollbar.enabled = h <= self.h
 	self.scrollbar:setThumbHeight(math.min(self.h, h))
+end
+
+function Gridlist:refreshItems(itemIndex)
+	if itemIndex then
+		local vals = {}
+		for k,v in pairs(self.items[itemIndex].values) do
+			if v.origValue then
+				table.insert(vals, v.origValue)
+			else
+				table.insert(vals, v.value)
+			end
+		end
+		self.items[itemIndex].values = parseItemValues(self, vals)
+	else
+		for i=1, #self.items do
+			local vals = {}
+			for k,v in pairs(self.items[i].values) do
+				if v.origValue then
+					table.insert(vals, v.origValue)
+				else
+					table.insert(vals, v.value)
+				end
+			end
+			self.items[i].values = parseItemValues(self, vals)
+		end
+	end
 end
 
 function Gridlist:addColumn(title, width)
