@@ -1,5 +1,6 @@
 Input = Class('Input')
 
+local pasteEdit
 
 function Input.new(x, y, w, h, value)
 	local self = inherit(Component.new("input", x, y, w, h), Input)
@@ -80,14 +81,29 @@ function Input:onKey(key, down)
 		end
 	elseif (self.active and key == 'c' and not down) then
 		if (getKeyState("lctrl")) then
-			clipboard = self.value
+			setClipboard(self.value)
 		end
 	elseif (self.active and key == 'v' and not down) then
 		if (getKeyState("lctrl")) then
-			self.value = self.value..clipboard
+			if isElement(pasteEdit) then
+				self.value = self.value..pasteEdit.text
+				pasteEdit:destroy()
+			end
 		end
 	elseif (self.active and key == 'enter' and down) then
 		self:emit('accepted')
+	end
+
+	if self.active then
+		if not isElement(pasteEdit) and getKeyState('lctrl') and down then
+			pasteEdit = guiCreateEdit(0,0,0,0,'',false)
+			pasteEdit:setAlpha(0)
+			pasteEdit:focus()
+		else
+			if isElement(pasteEdit) and key ~= 'v' then
+				pasteEdit:destroy()
+			end
+		end		
 	end
 end
 
