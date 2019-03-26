@@ -1,4 +1,4 @@
-# DX-GUI (A framework for MTA)
+# DX-GUI (A framework for Multi Theft Auto)
 
 DX-GUI allows scripters to build beautiful GUI with just a few lines of code.
 
