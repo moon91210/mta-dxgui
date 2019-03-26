@@ -6,7 +6,7 @@ function Scrollbar.new(x, y, w, h)
 	local self = inherit(Component.new('Scrollbar', x, y, w, h), Scrollbar)
 	self.min = 0
 	self.max = 100
-	self.thumb = Thumb.new(0, 0, w, self.h):setParent(self)
+	self.thumb = Thumb.new(0, 0, w, w):setParent(self)
 	return self
 end
 
