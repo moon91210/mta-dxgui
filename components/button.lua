@@ -9,14 +9,14 @@ function Button.new(x, y, w, h, value)
 end
 
 function Button:draw()
-	if (self.mouseDown and self.mouseOver) then
+	if self.mouseDown and self.mouseOver then
 		dxDrawRectangle(self.x, self.y, self.w, self.h, tocolor(155,155,55,150))
 	end
 
 	dxDrawRectangle(self.x, self.y, self.w, self.h, self.color)
 	-- dxDrawImage(self.x, self.y, self.w, self.h, "img/button.png", 0,0,0, tocolor(55,55,55,255))
 
-	if (self.mouseOver) then
+	if self.mouseOver then
 		dxDrawRectangle(self.x, self.y, self.w, self.h, tocolor(55,55,55,150))
 	end
 

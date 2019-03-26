@@ -21,17 +21,17 @@ function Image.new(x, y, w, h, path, postGUI, alpha)
 end
 
 function Image:load(path, isPixels)
-	if (self.path == path or not path) then
+	if self.path == path or not path then
 		return false
 	end
 	
-	if (not isPixels and path:find('://')) then -- hacky way of checking for urls
+	if not isPixels and path:find('://') then -- hacky way of checking for urls
 		self:loadRemote(path)
 		self.path = path
 		return true
 	end
 
-	if (isPixels) then
+	if isPixels then
 		self:loadPixels(path)
 		return true
 	end
@@ -39,7 +39,7 @@ function Image:load(path, isPixels)
 	self:unload()
 	self.path = path
 
-	if (not fileExists(path)) then
+	if not fileExists(path) then
 		return false
 	end
 
@@ -57,7 +57,7 @@ function Image:loadRemote(url, callback)
 	check('s', {url})
 	self:unload()
 	requestBrowserDomains({url}, true, function()
-		if (isBrowserDomainBlocked(url, true)) then
+		if isBrowserDomainBlocked(url, true) then
 			self:loadRemote(url)
 			return
 		end
@@ -89,9 +89,9 @@ function Image:loadPixels(pixels)
 end
 
 function Image:getNativeSize(update)
-	if (not self.pix) then return false end
+	if not self.pix then return false end
 
-	if (update) then
+	if update then
 		local w, h = dxGetPixelsSize(self.pix)
 		self.nativeSize = {w=w,h=h}
 	end
@@ -110,13 +110,13 @@ function Image:setFitMode(mode)
 end
 
 function Image:draw()
-	if (self.fitMode == "nostretch" and self.w ~= self.ow and self.h ~= self.oh) then
+	if self.fitMode == "nostretch" and self.w ~= self.ow and self.h ~= self.oh then
 		self:getNativeSize(false)
 		self.ow = self.w
 		self.oh = self.h
 	end
 
-	if (self.tex) then
+	if self.tex then
 		local size = self.fitMode == "nostretch" and self.fitSize or {w=self.w,h=self.h}
 		dxDrawImage(self.x, self.y, size.w, size.h, self.tex, 0, 0, 0, tocolor(255,255,255,self.alpha), self.postGUI)
 	else

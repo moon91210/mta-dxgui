@@ -18,7 +18,7 @@ function Checkbox:draw()
 
 	dxDrawRectangle(self.x, self.y, self.w, self.h, tocolor(0,0,0,100))
 	dxDrawRectangle(self.x, self.y, self.h, self.h, tocolor(0,0,0))
-	if (self.selected) then
+	if self.selected then
 		dxDrawRectangle(self.x + co, self.y + co, self.h - co*2, self.h - co*2)
 	end
 

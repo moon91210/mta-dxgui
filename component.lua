@@ -32,17 +32,17 @@ function Component.new(typ, x, y, w, h)
 end
 
 function Component:update()
-	if (not self.visible) then return end
+	if not self.visible then return end
 
 	local parent = self.parent
 	
-	if (parent) then
+	if parent then
 		self.x = parent.x + self.ox + parent.offx
 		self.y = parent.y + self.oy + parent.offy
 		self.focused = parent.focused -- children need a separate focus to fix child z-order issue
 	end
 	
-	if (self.draw) then
+	if self.draw then
 		self:draw()
 		self:emit('update')
 	end
@@ -51,7 +51,7 @@ function Component:update()
 		self.children[i]:update()
 	end
 
-	if (not self.enabled) then
+	if not self.enabled then
 		dxDrawRectangle(self.x, self.y, self.w, self.h, tocolor(0,0,0,200))
 	end
 
@@ -80,7 +80,7 @@ function Component:destroy()
 	end
 
 	local parent = self.parent
-	if (parent) then
+	if parent then
 		table.removeByValue(parent.children, self)
 	else
 		table.removeByValue(components, self)
@@ -210,18 +210,18 @@ end
 
 function Component:align(state)
 	local sw, sh = guiGetScreenSize()
-	if (self.parent) then
-		if (state == 'center' or state == 'centerX') then
+	if self.parent then
+		if state == 'center' or state == 'centerX' then
 			self.ox = self.parent.w/2-self.w/2
 		end
-		if (state == 'center' or state == 'centerY') then
+		if state == 'center' or state == 'centerY' then
 			self.oy = self.parent.h/2-self.h/2
 		end
 	else
-		if (state == 'center' or state == 'centerX') then
+		if state == 'center' or state == 'centerX' then
 			self.x = sw/2-self.w/2
 		end
-		if (state == 'center' or state == 'centerY') then
+		if state == 'center' or state == 'centerY' then
 			self.y = sh/2-self.h/2
 		end
 	end

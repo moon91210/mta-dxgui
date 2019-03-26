@@ -3,7 +3,7 @@ DragArea = Class('DragArea')
 
 function DragArea.new(x, y, w, h)
 	local self
-	if (not x) then
+	if not x then
 		self = inherit(Component.new("dragarea", 0, 0, 0, 0), DragArea)
 	else
 		self = inherit(Component.new("dragarea", x, y, w, h), DragArea)
@@ -26,8 +26,8 @@ function DragArea:draw()
 	local w, h = self.w, self.h
 	local fs
 
-	if (parent.type == "image") then
-		if (parent:getFitMode() == "nostretch") then
+	if parent.type == "image" then
+		if parent:getFitMode() == "nostretch" then
 			fs = parent:getFitSize()
 			w = fs.w
 			h = fs.h
@@ -37,11 +37,11 @@ function DragArea:draw()
 		end
 	end
 
-	if (self.auto and fs) then
+	if self.auto and fs then
 		self.w = fs.w
 		self.h = fs.h
 	else
-		if (not fs) then
+		if not fs then
 			self.w = self.w ~= 0 and self.w or parent.w
 			self.h = self.h ~= 0 and self.h or parent.h
 		end
@@ -52,7 +52,7 @@ function DragArea:draw()
 
 	local mo = parent.focused and isMouseOverPos(x, y, self.w, self.h)
 
-	if (pmx and mouseX and self.mouseDown and mo or mouseX and self.mouseDown and self.dragging) then
+	if pmx and mouseX and self.mouseDown and mo or mouseX and self.mouseDown and self.dragging then
 		local children = self.children
 
 		for k,v in pairs(children) do
@@ -64,7 +64,7 @@ function DragArea:draw()
 
 		local parentParent = parent.parent
 
-		if (parentParent) then
+		if parentParent then
 			parent.ox = constrain(parent.ox + (mouseX - pmx), 0, parentParent.w - w - parentParent.offx)
 			parent.oy = constrain(parent.oy + (mouseY - pmy), 0, parentParent.h - h - parentParent.offy)
 		else

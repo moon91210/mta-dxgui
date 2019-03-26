@@ -52,7 +52,7 @@ end
 
 function table.removeByValue(t, v)
 	for i=#t, 1, -1 do
-		if (t[i] == v) then
+		if t[i] == v then
 			return table.remove(t, i)
 		end
 	end
@@ -62,7 +62,7 @@ end
 function table.copy(t)
 	local new = {}
 	for k,v in pairs(t) do
-		if (type(v) == 'table') then
+		if type(v) == 'table' then
 			v = table.copy(v)
 		end
 		new[k] = v

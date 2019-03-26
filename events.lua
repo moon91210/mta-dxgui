@@ -8,7 +8,7 @@ addEventHandler('onClientClick', root, function(btn, state, mx, my)
 	for i = 1, #components do
 		local comp = components[i]
 		local state = dxClickHandler(comp, btn, state, mx, my)
-		if (state) then
+		if state then
 			comp.focused = state
 			return true
 		end
@@ -19,7 +19,7 @@ addEventHandler('onClientKey', root, function(key, down)
 	for i = 1, #components do
 		local comp = components[i]
 		comp.keyUsed = dxKeyHandler(components[i], key, down)
-		if (comp.keyUsed) then
+		if comp.keyUsed then
 			return false
 		end
 	end

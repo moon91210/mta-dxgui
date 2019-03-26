@@ -242,9 +242,9 @@ function Gridlist:sort(colIndex, reverse)
 	check('n', {colIndex})
 	local col = self.columns[colIndex]
 
-	if (col) then
+	if col then
 		table.sort(self.items, function(a, b)
-			if (reverse) then
+			if reverse then
 				return a.values[colIndex].value > b.values[colIndex].value
 			end
 			return a.values[colIndex].value < b.values[colIndex].value
@@ -254,14 +254,14 @@ function Gridlist:sort(colIndex, reverse)
 end
 
 function Gridlist:draw()
-	if (not self.visible) then return end
+	if not self.visible then return end
 
 	self.mouseOver = mouseX and isMouseOverPos(self.x, self.y, self.w, self.h)
 	self.maxItems = getMaxItems(self)
 
 	dxDrawRectangle(self.x, self.y, self.w, self.h, tocolor(0,0,0,150))
 
-	if (not self.rtUpdated or self.mouseOver and self.focused) then
+	if not self.rtUpdated or self.mouseOver and self.focused then
 		updateRT(self) -- draw items onto the render target
 		self.rtUpdated = true
 	end
@@ -270,7 +270,7 @@ function Gridlist:draw()
 end
 
 function Gridlist:drawItems()
-	if (not self.maxItems) then return end
+	if not self.maxItems then return end
 	
 	local itemCount = #self.items
 	self.ep = itemCount < self.maxItems and itemCount or self.sp + self.maxItems - 1
@@ -285,7 +285,7 @@ function Gridlist:drawItems()
 	for i=1, columnCount do
 		local col = self.columns[i]
 		
-		if (self.titleh > 0) then
+		if self.titleh > 0 then
 			dxDrawText(col.value, xOff, 0, xOff + col.width, self.titleh, tocolor(255,255,220), self.textSize, "default-bold", "left", "center")
 		end
 
@@ -340,26 +340,26 @@ function Gridlist:drawItems()
 end
 
 function Gridlist:onKey(key, down)
-	if (not self.mouseOver) then return end
+	if not self.mouseOver then return end
 	
 	self.rtUpdated = false
 
-	if (key == "mouse_wheel_down") then
-		if (self.sp <= #self.items - self.maxItems) then
+	if key == 'mouse_wheel_down' then
+		if self.sp <= #self.items - self.maxItems then
 			self.sp = self.sp + 1
 			self.scrollbar:setScrollPosition(self.sp)
 		end
 
-	elseif (key == "mouse_wheel_up") then
-		if (self.sp > 1) then
+	elseif key == 'mouse_wheel_up' then
+		if self.sp > 1 then
 			self.sp = self.sp - 1
 			self.scrollbar:setScrollPosition(self.sp)
 		end
 
-	elseif (key == 'mouse1' and not down and not self.scrollbar.mouseDown) then
+	elseif key == 'mouse1' and not down and not self.scrollbar.mouseDown then
 		for i=self.sp, self.ep do
 			local item = self.items[i]
-			if (self.mouseDown and isMouseOverPos(item.clickArea.x, item.clickArea.y, item.clickArea.w, item.clickArea.h)) then
+			if self.mouseDown and isMouseOverPos(item.clickArea.x, item.clickArea.y, item.clickArea.w, item.clickArea.h) then
 				self:setSelectedItem(i)
 				if item.onClick and type(item.onClick) == 'function' then
 					item.onClick()

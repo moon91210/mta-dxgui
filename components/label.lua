@@ -18,10 +18,10 @@ function Label.new(x, y, w, h, value, scale, color, shadowed, font, alignleft, a
 end
 
 function Label:draw()
-	if (self.bgVisible) then
+	if self.bgVisible then
 		dxDrawRectangle(self.x, self.y, self.w, self.h, self.bgColor)
 	end
-	if (self.shadow) then
+	if self.shadow then
 		dxDrawText(self.value, self.x + 1, self.y + 1, self.x + self.w + 1, self.y + self.h + 1, tocolor(0,0,0,255), self.scale, self.font, self.alignleft, self.aligntop, self.clip, self.wordBreak)
 	end
 	dxDrawText(self.value, self.x, self.y, self.x + self.w, self.y + self.h, self.color, self.scale, self.font, self.alignleft, self.aligntop, self.clip, self.wordBreak)
