@@ -244,10 +244,24 @@ function Gridlist:sort(colIndex, reverse)
 
 	if col then
 		table.sort(self.items, function(a, b)
+			a = a.values[colIndex].value
+			b = b.values[colIndex].value
+			anum = tonumber(a)
+			bnum = tonumber(b)
+
 			if reverse then
-				return a.values[colIndex].value > b.values[colIndex].value
+				if anum and bnum then
+					return anum > tonumber(b)
+				else
+					return a > b
+				end
 			end
-			return a.values[colIndex].value < b.values[colIndex].value
+			
+			if anum and bnum then
+				return anum < bnum
+			else
+				return a < b
+			end
 		end)
 		updateRT(self)
 	end
