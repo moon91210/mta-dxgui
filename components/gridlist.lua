@@ -251,12 +251,12 @@ function Gridlist:sort(colIndex, reverse)
 
 			if reverse then
 				if anum and bnum then
-					return anum > tonumber(b)
+					return anum > bnum
 				else
 					return a > b
 				end
 			end
-			
+
 			if anum and bnum then
 				return anum < bnum
 			else
