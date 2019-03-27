@@ -67,7 +67,7 @@ function ColorPicker()
 	local size = self.img:getNativeSize()
 
 	self:on('update', function()
-		if not mouseDown and mouseX and self.img.mouseDown then return end
+		if not self.img.mouseDown then return end
 
 		local x = map(mouseX + self.x, self.x + self.img.x, self.x + self.img.x + self.img.w, 0, self.img.w)
 		local y = map(mouseY + self.y, self.y + self.img.y, self.y + self.img.y + self.img.h, 0, self.img.h)

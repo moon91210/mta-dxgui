@@ -1,18 +1,16 @@
-addEventHandler('onClientResourceStart', resourceRoot, function()
-	-- Globals
-	screenWidth, screenHeight = guiGetScreenSize()
-	mouseX = false
-	mouseY = false
-	mouseDown = false
+-- Globals
+screenWidth, screenHeight = guiGetScreenSize()
+mouseX = false
+mouseY = false
+mouseDown = false
 
-	addEventHandler("onClientRender", root, function()
-		-- @TODO Maybe run this only when a gui is focused for performance reasons
-		local mx, my = getCursorPosition()
-		mouseX = mx and mx*screenWidth
-		mouseY = my and my*screenHeight
-	
-		mouseDown = mouseX and (getKeyState('mouse1') or getKeyState('mouse2') or getKeyState('mouse3'))
-	end)
+addEventHandler("onClientRender", root, function()
+	-- @TODO Maybe run this only when a gui is focused for performance reasons
+	local mx, my = getCursorPosition()
+	mouseX = mx and mx*screenWidth
+	mouseY = my and my*screenHeight
+
+	mouseDown = mouseX and (getKeyState('mouse1') or getKeyState('mouse2') or getKeyState('mouse3'))
 end)
 
 function getMouseDown()
