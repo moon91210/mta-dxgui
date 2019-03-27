@@ -103,6 +103,11 @@ function map(n, start1, stop1, start2, stop2)
 	return ((n-start1)/(stop1-start1))*(stop2-start2)+start2
 end
 
+function math.round(num, idp)
+	local mult = 10 ^ (idp or 0)
+	return math.floor(num * mult + 0.5) / mult
+end
+
 function assert(statement, message, level)
 	local funcName = debug.getinfo(2, 'n').name or 'unknown'
 	message = message or 'assertion failed!'

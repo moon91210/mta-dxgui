@@ -15,7 +15,7 @@ function ProgressBar:draw()
 
 	dxDrawRectangle(x, y, w, h, tocolor(0,0,0,225))
 	dxDrawRectangle(x + padding, y + padding, (w - padding*2) * progress, h - padding*2, tocolor(55,55,255,255), false, true)
-	dxDrawText(progress*100 .. '%', x, y, x + w, y + h, tocolor(255,255,255), 1.5, 'arial', 'center', 'center')
+	dxDrawText(math.round(progress*100, 2) .. '%', x, y, x + w, y + h, tocolor(255,255,255), 1.5, 'arial', 'center', 'center')
 end
 
 function ProgressBar:setProgress(value)
