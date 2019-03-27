@@ -10,15 +10,15 @@ local tab2 = tp:addTab('Second')
 
 local btn1 = Button(50, 50, 120, 45, 'click me')
 btn1:setParent(tab1)
-btn1:once('mouseup', function() btn1:setValue('clicked') end)
+btn1:once('mouseup', function() btn1.value = 'clicked' end)
 
 local btn2 = Button(50, 110, 120, 45, 'click me')
 btn2:setParent(tab1)
 btn2:on('mouseup', function()
-	if btn2:getValue() == 'click me' then
-		btn2:setValue('click me again')
+	if btn2.value == 'click me' then
+		btn2.value = 'click me again'
 	else
-		btn2:setValue('click me')
+		btn2.value = 'click me'
 	end
 end)
 
@@ -28,6 +28,11 @@ tp2:align('centerX')
 local tab4 = tp2:addTab('First')
 local tab5 = tp2:addTab('Second')
 local tab6 = tp2:addTab('Third')
+
+local btn4 = Button(50, 50, 120, 45, 'drag me')
+btn4:setParent(tab4)
+btn4:once('mouseup', function() btn4.value = 'thank you' end)
+btn4:setDraggable(true)
 
 local img = Image(0, 25, 180, 180, 'https://i.imgur.com/asJeuJ4.jpg')
 img:setParent(tab5)
@@ -42,7 +47,6 @@ list:setParent(win2)
 list:addColumn('Random')
 list:addColumn('Data')
 list:setItemHeight(37.5)
-list:setDraggable(true)
 
 for i=1, 20 do
 	list:addItem({math.random(99), math.random(999)})
@@ -78,11 +82,11 @@ input:setParent(win2)
 
 local slider = Slider(25,122,300,40)
 slider:setParent(win2)
-slider:setMinMax(1, 49)
+slider:setMinMax(0, 100)
 slider:setSeekerPosition(30)
 
 slider:on('change', function(pos)
-	input:setValue(pos)
+	input.value = pos
 	pb:setProgress(pos/100)
 end)
 
