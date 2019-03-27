@@ -242,29 +242,30 @@ function Gridlist:sort(colIndex, reverse)
 	check('n', {colIndex})
 	local col = self.columns[colIndex]
 
-	if col then
-		table.sort(self.items, function(a, b)
-			a = a.values[colIndex].value
-			b = b.values[colIndex].value
-			anum = tonumber(a)
-			bnum = tonumber(b)
+	if not col then return end
 
-			if reverse then
-				if anum and bnum then
-					return anum > bnum
-				else
-					return a > b
-				end
-			end
+	table.sort(self.items, function(a, b)
+		a = a.values[colIndex].value
+		b = b.values[colIndex].value
+		local anum = tonumber(a)
+		local bnum = tonumber(b)
 
+		if reverse then
 			if anum and bnum then
-				return anum < bnum
+				return anum > bnum
 			else
-				return a < b
+				return a > b
 			end
-		end)
-		updateRT(self)
-	end
+		end
+
+		if anum and bnum then
+			return anum < bnum
+		else
+			return a < b
+		end
+	end)
+
+	updateRT(self)
 end
 
 function Gridlist:draw()
