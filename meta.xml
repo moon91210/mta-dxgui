@@ -1,5 +1,5 @@
 <meta>
-    <info name="DX GUI Framework" author="Tails" type="script" version="0.1"/>
+    <info name="DX GUI Framework" author="Tails" type="script" version="0.2"/>
     <min_mta_version client="1.5.4-9.11413" server="1.5.4-9.11413"/>
     <oop>true</oop>
     <!-- utils -->
@@ -12,6 +12,8 @@
 
     <!-- components -->
     <script src="components/dragarea.lua" type="client" cache="false"/>
+    <script src="components/scrollbar.lua" type="client" cache="false"/>
+    <script src="components/scrollpane.lua" type="client" cache="false"/>
     <script src="components/button.lua" type="client" cache="false"/>
     <script src="components/window.lua" type="client" cache="false"/>
     <script src="components/image.lua" type="client" cache="false"/>
@@ -31,8 +33,6 @@
     <script src="components/colorpicker.lua" type="client" cache="false"/>
 
     <!-- tests/examples -->
-    <!-- <script src="demo/demo.lua" type="client"/> -->
-    <!-- <script src="demo/demo_s.lua" type="server"/> -->
     <script src="demo.lua" type="client"/>
 
     <!-- files -->
