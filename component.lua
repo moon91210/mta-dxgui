@@ -117,6 +117,22 @@ function Component:addChild(...)
 	end
 end
 
+function Component:getChildren(typ)
+	if typ then
+		check('s', {typ})
+		local children = {}
+		for i=1, #self.children do
+			local child = self.children[i]
+			if child.type == typ then
+				table.insert(children, child)
+			end
+		end
+		return children
+	else
+		return self.children
+	end
+end
+
 function Component:removeParent()
 	if self.parent then
 		table.removeByValue(self.parent.children, self)
