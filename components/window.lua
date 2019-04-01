@@ -37,7 +37,7 @@ function Window:draw()
 	-- main bg
 	dxDrawRectangle(self.x, self.y + self.titleh, self.w, self.h - self.titleh, color)
 
-	self:drawBorders(6, tocolor(132,132,132,55))
+	self:drawBorders(2, tocolor(55,55,255,155))
 end
 
 setmetatable(Window, {__call = function(_, ...) return Window.new(...) end})
