@@ -27,6 +27,7 @@
     <script src="components/browser.lua" type="client" cache="false"/>
     <script src="components/mediaplayer.lua" type="client" cache="false"/>
     <script src="components/slider.lua" type="client" cache="false"/>
+    <script src="components/radiobutton.lua" type="client" cache="false"/>
 
     <!-- modules -->
     <script src="components/alert.lua" type="client" cache="false"/>
