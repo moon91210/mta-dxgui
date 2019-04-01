@@ -12,7 +12,6 @@ function RadioButton.new(x, y, w, h, value)
 			for i=1, #btns do
 				if btns[i] ~= self then
 					btns[i]:select(false)
-					self:emit('select', self.selected)
 				end
 			end
 		end
