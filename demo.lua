@@ -22,6 +22,16 @@ btn2:on('mouseup', function()
 	end
 end)
 
+local checked = false
+local checkbox = Checkbox(190, 50, 160, 25, 'Check me'):setParent(tab1)
+checkbox:on('mouseup', function()
+	checked = not checked
+	checkbox.value = checked and 'Checked!' or 'Check me'
+end)
+
+local radiobtn1 = RadioButton(190, 100, 160, 25, 'Check me'):setParent(tab1)
+local radiobtn2 = RadioButton(190, 130, 160, 25, 'Check me'):setParent(tab1)
+
 local tp2 = TabPanel(0, 200, 700, 300)
 tp2:setParent(tab1)
 tp2:align('centerX')
@@ -29,14 +39,14 @@ local tab4 = tp2:addTab('First')
 local tab5 = tp2:addTab('Second')
 local tab6 = tp2:addTab('Third')
 
-local btn4 = Button(50, 50, 120, 45, 'drag me')
-btn4:setParent(tab4)
-btn4:once('mouseup', function() btn4.value = 'thank you' end)
-btn4:setDraggable(true)
-
-local img = Image(0, 25, 180, 180, 'https://i.imgur.com/asJeuJ4.jpg')
+local img = Image(25, 25, 180, 180, 'https://i.imgur.com/asJeuJ4.jpg')
 img:setParent(tab5)
 img:setDraggable(true)
+
+local lbl = Label(300, 55, 300, 25, 'Drag the image around', 2):setParent(tab5)
+
+local win3 = Window(15, 15, 550, 250, 'Window within a window'):setParent(tab4)
+local win4 = Window(15, 15, 440, 170, 'Window within a window within a window'):setParent(win3)
 
 
 local win2 = Window(0, 0, 700, 500, 'Another window')
