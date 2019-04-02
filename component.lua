@@ -34,6 +34,10 @@ end
 function Component:update()
 	if not self.visible then return end
 
+	if type(self.value) ~= 'string' then
+		self.value = tostring(self.value)
+	end
+
 	local parent = self.parent
 	
 	if parent then
