@@ -43,7 +43,6 @@ function Component:update()
 	if parent then
 		self.x = parent.x + self.ox + parent.offx
 		self.y = parent.y + self.oy + parent.offy
-		self.focused = parent.focused -- children need a separate focus to fix child z-order issue
 	end
 	
 	if self.draw then
@@ -65,16 +64,17 @@ end
 function Component:focus()
 	if not self.visible then return end
 
-	if self.parent then
-		self.parent:focus()
-	else
-		for i=1, #components do
-			if self ~= components[i] then
-				components[i].focused = false
-			end
+	for i=1, #components do
+		if self ~= components[i] then
+			components[i].focused = false
 		end
-		self.focused = true
 	end
+
+	for i=1, #self.children do
+		self.children[i]:focus()
+	end
+
+	self.focused = true
 end
 
 function Component:destroy()
