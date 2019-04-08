@@ -110,22 +110,18 @@ function Image:setFitMode(mode)
 end
 
 function Image:draw()
-	if self.fitMode == "nostretch" and self.w ~= self.ow and self.h ~= self.oh then
+	if self.fitMode == 'nostretch' and self.w ~= self.ow and self.h ~= self.oh then
 		self:getNativeSize(false)
 		self.ow = self.w
 		self.oh = self.h
 	end
 
 	if self.tex then
-		local size = self.fitMode == "nostretch" and self.fitSize or {w=self.w,h=self.h}
+		local size = self.fitMode == 'nostretch' and self.fitSize or {w=self.w,h=self.h}
 		dxDrawImage(self.x, self.y, size.w, size.h, self.tex, 0, 0, 0, tocolor(255,255,255,self.alpha), self.postGUI)
 	else
-		local color = tocolor(160,160,160,150)
-		dxDrawLine(self.x, self.y, self.x+self.w, self.y, color) -- top
-		dxDrawLine(self.x, self.y+self.h, self.x+self.w, self.y+self.h, color) -- bottom
-		dxDrawLine(self.x, self.y, self.x, self.y+self.h, color) -- left
-		dxDrawLine(self.x+self.w, self.y, self.x+self.w, self.y+self.h, color) -- right
-		dxDrawImage(self.x, self.y, 35, 35, "img/broken.png", 0, 0, 0, tocolor(255,255,255,self.alpha), self.postGUI)
+		self:drawBorders(1, tocolor(160,160,160,150))
+		dxDrawImage(self.x, self.y, 35, 35, 'img/broken.png', 0, 0, 0, tocolor(255,255,255,255), self.postGUI)
 	end
 end
 
