@@ -41,16 +41,20 @@ Check out ``demo.lua`` for more examples.
 | TabPanel |
 | Gridlist |
 | MediaPlayer |
-| Alert |
-| ColorPicker |
 | ProgressBar |
 | Scrollbar |
 | Slider |
 | DragArea |
 | Browser |
+| RadioButton |
 | Lots more to come... |
 
-> Please note that some of these components aren't complete yet and missing features.
+| Modules |
+| ------- |
+| ColorPicker |
+| Alert |
+
+> Please note that some of these components aren't complete yet and/or missing features.
 
 # License
 
