@@ -65,8 +65,13 @@ function DragArea:draw()
 		local parentParent = parent.parent
 
 		if parentParent then
-			parent.ox = constrain(parent.ox + (mouseX - pmx), 0, parentParent.w - parent.w - parentParent.offx)
-			parent.oy = constrain(parent.oy + (mouseY - pmy), 0, parentParent.h - parent.h - parentParent.offy)
+			if parent.type == 'image' then
+				parent.ox = constrain(parent.ox + (mouseX - pmx), 0, parentParent.w - w - parentParent.offx)
+				parent.oy = constrain(parent.oy + (mouseY - pmy), 0, parentParent.h - h - parentParent.offy)
+			else
+				parent.ox = constrain(parent.ox + (mouseX - pmx), 0, parentParent.w - parent.w - parentParent.offx)
+				parent.oy = constrain(parent.oy + (mouseY - pmy), 0, parentParent.h - parent.h - parentParent.offy)
+			end
 		else
 			parent.x = parent.x + (mouseX - pmx)
 			parent.y = parent.y + (mouseY - pmy)
