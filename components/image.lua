@@ -88,6 +88,17 @@ function Image:loadPixels(pixels)
 	self:getNativeSize(true)
 end
 
+function Image:saveAs(path)
+	check('s', {path})
+	local f = File(path)
+	if f then
+		f:write(self.pix)
+		f:close()
+		return true
+	end
+	return false
+end
+
 function Image:getNativeSize(update)
 	if not self.pix then return false end
 
