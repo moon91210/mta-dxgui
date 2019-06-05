@@ -6,7 +6,7 @@ function Input.new(x, y, w, h, value)
 	local self = inherit(Component.new("input", x, y, w, h), Input)
 	self.value = value or ''
 	self.masked = false
-	self.readonly = false
+	self.readOnly = false
 	self.maxLength = nil
 	self.active = false
 	self.font = "tahoma"
@@ -67,7 +67,7 @@ function Input:onChar(char)
 end
 
 function Input:onKey(key, down)
-	if self.readonly then	return end
+	if self.readOnly then return end
 
 	if key == 'mouse1' then
 		self:setActive(self.mouseOver)
@@ -92,6 +92,7 @@ function Input:onKey(key, down)
 		end
 	elseif self.active and key == 'enter' and down then
 		self:emit('accepted')
+		self:setActive(false)
 	end
 
 	if self.active then
