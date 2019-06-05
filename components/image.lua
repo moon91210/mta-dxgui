@@ -91,7 +91,7 @@ end
 function Image:saveAs(path)
 	check('s', {path})
 	local f = File(path)
-	if f then
+	if f and self.pix then
 		f:write(self.pix)
 		f:close()
 		return true
