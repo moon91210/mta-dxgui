@@ -165,7 +165,7 @@ function Gridlist:addItem(values, onClick)
 
 	local item = {
 		values = parseItemValues(self, values),
-		onClick = onClick or nil
+		onClick = type(onClick) == 'function' and onClick or false
 	}
 
 	table.insert(self.items, item)
@@ -189,13 +189,40 @@ function Gridlist:removeItem(itemIndex)
 	updateRT(self)
 end
 
+function Gridlist:getItemsValues()
+	local items = {}
+	for _, item in ipairs(self.items) do
+		local vals = {}
+		for i, value in ipairs(item.values) do
+			table.insert(vals, value.value)
+		end
+		table.insert(items, vals)
+	end
+	return items
+end
+
 function Gridlist:getSelectedItem()
 	return self.selectedItem
 end
 
 function Gridlist:setSelectedItem(index)
-	self.selectedItem = index
-	updateRT(self)
+	if self.items[index] then
+		self.selectedItem = index
+		if self.items[index].onClick then
+			self.items[index].onClick(index)
+		end
+		updateRT(self)
+	end
+end
+
+function Gridlist:selectNextItem()
+	local itemIndex = self.selectedItem == #self.items and 1 or self.selectedItem + 1
+	self:setSelectedItem(itemIndex)
+end
+
+function Gridlist:selectPrevItem()
+	local itemIndex = self.selectedItem == 1 and #self.items or self.selectedItem - 1
+	self:setSelectedItem(itemIndex)
 end
 
 function Gridlist:getItemValue(itemIndex, colIndex)
@@ -376,12 +403,14 @@ function Gridlist:onKey(key, down)
 			local item = self.items[i]
 			if self.mouseDown and isMouseOverPos(item.clickArea.x, item.clickArea.y, item.clickArea.w, item.clickArea.h) then
 				self:setSelectedItem(i)
-				if item.onClick and type(item.onClick) == 'function' then
-					item.onClick()
-					return
-				end
 			end
 		end
+
+	elseif key == 'arrow_d' and down then
+		self:selectNextItem()
+
+	elseif key == 'arrow_u' and down then
+		self:selectPrevItem()
 	end
 end
 
