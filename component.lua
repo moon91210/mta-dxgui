@@ -75,6 +75,8 @@ function Component:focus()
 	end
 
 	self.focused = true
+
+	return self
 end
 
 function Component:destroy()
