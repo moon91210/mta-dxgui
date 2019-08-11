@@ -119,6 +119,8 @@ function Component:addChild(...)
 			end
 		end
 	end
+
+	return self
 end
 
 function Component:getChildren(typ)
@@ -229,7 +231,6 @@ function Component:setValue(v)
 end
 
 function Component:align(state)
-	local sw, sh = guiGetScreenSize()
 	if self.parent then
 		if state == 'center' or state == 'centerX' then
 			self.ox = self.parent.w/2-self.w/2
@@ -239,12 +240,17 @@ function Component:align(state)
 		end
 	else
 		if state == 'center' or state == 'centerX' then
-			self.x = sw/2-self.w/2
+			self.x = screenWidth/2-self.w/2
 		end
 		if state == 'center' or state == 'centerY' then
-			self.y = sh/2-self.h/2
+			self.y = screenHeight/2-self.h/2
 		end
 	end
+	return self
+end
+
+function Component:center()
+	self:align('center')
 	return self
 end
 
