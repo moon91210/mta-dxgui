@@ -231,6 +231,16 @@ function Component:setVisible(v)
 	return self
 end
 
+function Component:hide()
+	self.visible = false
+	return self
+end
+
+function Component:show()
+	self.visible = true
+	return self
+end
+
 function Component:getValue()
 	return self.value
 end
