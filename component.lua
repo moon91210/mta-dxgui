@@ -23,6 +23,7 @@ function Component.new(typ, x, y, w, h)
 	self.mouseOver = false
 	self.mouseDown = false
 	self.dragArea = nil
+	self.tooltip = {}
 
 	Emitter.new(self)
 
