@@ -160,6 +160,14 @@ function Component:setOnTop()
 	return self
 end
 
+function Component:isOnTop()
+	local first = components[1]
+	if first == self.parent or first == self then
+		return true
+	end
+	return false
+end
+
 function Component:setToBack()
 	local comps = self.parent and self.parent.children or components
 	if comps[#comps] ~= self then
