@@ -59,6 +59,39 @@ function Component:update()
 	end
 
 	self.mouseOver = (self.focused or not parent) and isMouseOverPos(self.x, self.y, self.w, self.h)
+
+	self:drawTooltip()
+end
+
+function Component:drawTooltip()
+	if not self.tooltip.value then return end
+	if not self.mouseOver then return end
+	if not self:isOnTop() then return end
+
+	local d = self.tooltip
+	local val = d.value
+	local tw, th = d.tw, d.th
+	local pad = d.pad
+	local offset = d.offset
+	local fontSize = d.fontSize
+	local font = d.font
+	local mx, my = mouseX + offset, mouseY + offset
+
+	dxDrawRectangle(mx, my, tw + pad*4, th + pad*2, tocolor(0,0,0,215), true)
+	dxDrawText(val, mx + pad*2, my + pad, tw - pad*2, th - pad*2, tocolor(255,255,255), fontSize, font, 'left', 'top', false, false, true)
+end
+
+function Component:setTooltip(data)
+	check('t', {data})
+	if type(data.value) ~= 'string' then return end
+	local d = self.tooltip
+	d.value = data.value
+	d.fontSize = data.fontSize or d.fontSize or 1.5
+	d.pad = data.pad or d.pad or 3
+	d.offset = data.offset or d.offset or 10
+	d.font = data.font or d.font or 'default'
+	d.tw = dxGetTextWidth(d.value, d.fontSize, d.font)
+	d.th = dxGetFontHeight(d.fontSize, d.font)
 end
 
 function Component:focus()
