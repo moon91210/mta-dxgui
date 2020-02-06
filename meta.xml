@@ -33,9 +33,7 @@
     <script src="components/colorpicker.lua" type="client" cache="false"/>
 
     <!-- tests/examples -->
-    <!-- <script src="demo.lua" type="client"/> -->
-    <script src="demo/demo_s.lua" type="client"/>
-    <script src="demo/demo.lua" type="client"/>
+    <script src="demo.lua" type="client"/>
 
     <!-- files -->
     <file src="img/corner.png"/>
