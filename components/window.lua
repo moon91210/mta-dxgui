@@ -7,18 +7,7 @@ function Window.new(x, y, w, h, value)
 	self.value = value or ""
 	self.titleh = 30
 	self.offy = self.titleh
-	self.styles = {
-		closeButtonBackgroundColor = tocolor(55,55,165,255),
-		closeButtonHoverBackgroundColor = tocolor(55,55,55,150),
-		tabBackgroundColor = tocolor(0,0,0,245),
-		backgroundColor = tocolor(20,20,20,235),
-		borderColor = tocolor(55,55,255,155),
-		fontFamily = "tahoma",
-		strokeColor = tocolor(0,0,0,255),
-		color = tocolor(255,255,255,255),
-		borderSize = 1
-	}
-
+	self.styles = table.copy(DefaultStyles.Window)
 	local dragArea = DragArea(0, -self.offy, self.w, self.titleh):setParent(self)
 
 	self.closeBtn = Button.new(self.w - self.titleh, 3, self.titleh-3, self.titleh-5, "×")

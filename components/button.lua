@@ -4,13 +4,7 @@ Button = Class('Button')
 function Button.new(x, y, w, h, value)
 	local self = inherit(Component.new("button", x, y, w, h), Button)
 	self.value = value or ""
-	self.styles = {
-		backgroundColor = tocolor(55,55,165,255),
-		hoverBackgroundColor = tocolor(55,55,55,150),
-		fontFamily = "default", 
-		fontSize = 1.25, 
-		color = tocolor(255,255,255,255),
-	}
+	self.styles = table.copy(DefaultStyles.Button)
 	return self
 end
 

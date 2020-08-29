@@ -9,14 +9,7 @@ function Input.new(x, y, w, h, value)
 	self.readOnly = false
 	self.maxLength = nil
 	self.active = false
-	self.styles = {
-		backgroundColor = tocolor(255,255,255,255),
-		fontFamily = "tahoma", 
-		fontSize = 1.35, 
-		color = tocolor(28, 27, 28, 255),		
-		borderColor = tocolor(255,255,255,0),
-		borderSize = 1
-	}
+	self.styles = table.copy(DefaultStyles.Input)
 	self.backspaceHeld = false
 	self.backspaceTick = nil
 	self.charEvent = function(char) self:onChar(char) end

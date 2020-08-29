@@ -4,20 +4,7 @@ Label = Class('Label')
 function Label.new(x, y, w, h, value, scale, color, shadowed, font, alignleft, aligntop, clip, wordBreak)
 	local self = inherit(Component.new('label', x, y, w, h), Label)
 	self.value = value or ''
-	self.styles = {
-		shadowVisible = false, 
-		shadowColor = tocolor(0,0,0,255),
-		backgroundVisible = false,
-		backgroundColor =  tocolor(0,0,0,200),
-		hoverBackgroundColor = tocolor(55,55,55,150),
-		alignVertical = "top",
-		alignHorizontal = "left",
-		fontFamily = "default", 
-		fontSize = 1, 
-		textClip = false,
-		wordBreak = false, 
-		color = tocolor(255,255,255,255),
-	}
+	self.styles = table.copy(DefaultStyles.Label)
 	return self
 end
 

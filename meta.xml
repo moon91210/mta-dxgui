@@ -8,6 +8,7 @@
     <!-- main -->
     <script src="emitter.lua" type="client" cache="false"/>
     <script src="component.lua" type="client" cache="false"/>
+    <script src="default_styles.lua" type="client" cache="false"/>
     <script src="events.lua" type="client" cache="false"/>
 
     <!-- components -->
