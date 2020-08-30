@@ -308,11 +308,24 @@ function Component:center()
 	return self
 end
 
-function Component:drawBorders(size, color)
-	size = size or 2
-	color = color or tocolor(255,55,55,200)
-	dxDrawLine(self.x-size, self.y-size/2, self.x+size + self.w, self.y-size/2, color, size)--top
-	dxDrawLine(self.x-size, self.y+size/2 + self.h, self.x+size + self.w, self.y+size/2 + self.h, color, size)--bottom
-	dxDrawLine(self.x-size/2, self.y, self.x-size/2, self.y + self.h, color, size)--left
-	dxDrawLine(self.x+size/2 + self.w, self.y, self.x+size/2 + self.w, self.y + self.h, color, size)--right
+function Component:drawBorders()
+	dxDrawLine(self.x-self.styles.borderSize, self.y-self.styles.borderSize/2, self.x+self.styles.borderSize + self.w, self.y-self.styles.borderSize/2, self.styles.borderColor, self.styles.borderSize)--top
+	dxDrawLine(self.x-self.styles.borderSize, self.y+self.styles.borderSize/2 + self.h, self.x+self.styles.borderSize + self.w, self.y+self.styles.borderSize/2 + self.h, self.styles.borderColor, self.styles.borderSize)--bottom
+	dxDrawLine(self.x-self.styles.borderSize/2, self.y, self.x-self.styles.borderSize/2, self.y + self.h, self.styles.borderColor, self.styles.borderSize)--left
+	dxDrawLine(self.x+self.styles.borderSize/2 + self.w, self.y, self.x+self.styles.borderSize/2 + self.w, self.y + self.h, self.styles.borderColor, self.styles.borderSize)--right
 end
+
+function Component:setStyle(...)
+	if (type(arg[1]) == "table") then 
+		for styleName, value in pairs(arg[1]) do 
+			if (self.styles[styleName] or self.styles[styleName] == false) then 
+				self.styles[styleName] = value
+			end 
+		end 
+	elseif (type(arg[1]) == "string") then 
+		if (self.styles[arg[1]] or self.styles[arg[1]] == false) then 
+			self.styles[arg[1]] = arg[2]
+		end 
+	end 
+end 
+

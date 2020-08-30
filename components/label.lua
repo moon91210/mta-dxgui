@@ -4,27 +4,19 @@ Label = Class('Label')
 function Label.new(x, y, w, h, value, scale, color, shadowed, font, alignleft, aligntop, clip, wordBreak)
 	local self = inherit(Component.new('label', x, y, w, h), Label)
 	self.value = value or ''
-	self.scale = scale or 1
-	self.color = color or tocolor(255,255,255,255)
-	self.bgVisible = false
-	self.bgColor = tocolor(0,0,0,200)
-	self.shadow = shadowed or false
-	self.font = font or 'default'
-	self.alignleft = alignleft or 'left'
-	self.aligntop = aligntop or 'top'
-	self.clip = clip or false
-	self.wordBreak = wordBreak or true
+	self.styles = table.copy(DefaultStyles.Label)
 	return self
 end
 
 function Label:draw()
-	if self.bgVisible then
-		dxDrawRectangle(self.x, self.y, self.w, self.h, self.bgColor)
+	if self.styles.backgroundVisible then
+		dxDrawRectangle(self.x, self.y, self.w, self.h, self.styles.backgroundColor)
 	end
-	if self.shadow then
-		dxDrawText(self.value, self.x + 1, self.y + 1, self.x + self.w + 1, self.y + self.h + 1, tocolor(0,0,0,255), self.scale, self.font, self.alignleft, self.aligntop, self.clip, self.wordBreak)
+	if self.styles.shadowVisible then
+		dxDrawText(self.value, self.x + 1, self.y + 1, self.x + self.w + 1, self.y + self.h + 1, self.styles.shadowColor, self.styles.fontSize, self.styles.fontFamily, self.styles.alignHorizontal, self.styles.alignVertical, self.styles.textClip, self.styles.wordBreak)
 	end
-	dxDrawText(self.value, self.x, self.y, self.x + self.w, self.y + self.h, self.color, self.scale, self.font, self.alignleft, self.aligntop, self.clip, self.wordBreak)
+	dxDrawText(self.value, self.x, self.y, self.x + self.w, self.y + self.h, self.styles.color, self.styles.fontSize, self.styles.fontFamily, self.styles.alignHorizontal, self.styles.alignVertical, self.styles.textClip, self.styles.wordBreak)
 end
 
 setmetatable(Label, {__call = function(_, ...) return Label.new(...) end})
+
