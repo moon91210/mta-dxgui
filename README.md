@@ -60,4 +60,4 @@ Check out ``demo.lua`` for more examples.
 
 Copyright 2018 Tails
 
-Licensed under the LGPLv3: https://www.gnu.org/licenses/lgpl-3.0.html
+Licensed under the MIT license.
