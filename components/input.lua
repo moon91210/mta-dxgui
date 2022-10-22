@@ -9,8 +9,7 @@ function Input.new(x, y, w, h, value)
 	self.readOnly = false
 	self.maxLength = nil
 	self.active = false
-	self.font = "tahoma"
-	self.fontSize = 1.35
+	self.styles = table.copy(DefaultStyles.Input)
 	self.backspaceHeld = false
 	self.backspaceTick = nil
 	self.charEvent = function(char) self:onChar(char) end
@@ -19,22 +18,23 @@ end
 
 function Input:draw()
 	local value = self.masked and ("*"):rep(#self.value) or self.value
-	local textWidth = dxGetTextWidth(value, self.fontSize, self.font, false)
+	local textWidth = dxGetTextWidth(value, self.styles.fontSize, self.styles.fontFamily, false)
 
-	dxDrawRectangle(self.x, self.y, self.w, self.h, tocolor(255,255,255,255))
-	dxDrawText(value, self.x, self.y, self.x + self.w, self.y + self.h, tocolor(28, 27, 28, 255), self.fontSize, self.font, "left", "center", true, false, false, false, false)
+	dxDrawRectangle(self.x, self.y, self.w, self.h, self.styles.backgroundColor)
+	dxDrawText(value, self.x, self.y, self.x + self.w, self.y + self.h, self.styles.color, self.styles.fontSize, self.styles.fontFamily, "left", "center", true, false, false, false, false)
 
 	if self.active and getTickCount() % 1000 < 500 then
 		local x = textWidth < self.w and self.x + textWidth or self.x + self.w - 3
 		local y = self.y + 2
-
-		dxDrawRectangle(x, y+6, 2, self.h - 15, tocolor(22, 22, 22, 255), true)
+		dxDrawRectangle(x, y+6, 2, self.h - 15, self.styles.color, true)
 	end
 
 	if self.backspaceHeld and getTickCount() > self.backspaceTick + 25 then
 		self.backspaceTick = getTickCount()
 		self.value = self.value:sub(1,-2)
 	end
+	
+	self:drawBorders()
 end
 
 function Input:setMasked(state)
